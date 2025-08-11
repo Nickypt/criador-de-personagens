@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criador de Personagens</title>
+    <!-- Inclui o Tailwind CSS para estilização rápida e responsiva -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center min-h-screen p-4">
+
+    <main class="bg-white/30 backdrop-blur-lg rounded-3xl shadow-2xl p-8 max-w-5xl w-full flex flex-col lg:flex-row gap-10 border border-white/20">
+        
+        <!-- Área do Personagem -->
+        <div class="lg:w-1/2 flex items-center justify-center bg-white/20 rounded-xl p-4 shadow-inner border border-white/20">
+            <div class="character-container">
+                <!-- Peças do personagem. A ordem importa para o z-index -->
+                <div id="skin-left-arm" class="character-part left-arm bg-[#FDE6E6]"></div>
+                <div id="skin-right-arm" class="character-part right-arm bg-[#FDE6E6]"></div>
+                <div id="skin-left-leg" class="character-part left-leg bg-[#FDE6E6]"></div>
+                <div id="skin-right-leg" class="character-part right-leg bg-[#FDE6E6]"></div>
+                <div id="skin-body" class="character-part body bg-[#FDE6E6]"></div>
+                
+                <!-- Estilos de Cabelo -->
+                <div id="hair-style-1" class="character-part hair-style-1"></div>
+                <div id="hair-style-2" class="character-part hair-style-2 hidden"></div>
+
+                <!-- Estilos de Roupas -->
+                <div id="shirt-style-1" class="character-part shirt-style-1"></div>
+                <div id="shirt-style-2" class="character-part shirt-style-2 hidden"></div>
+                <div id="pants-style-1" class="character-part pants-style-1"></div>
+                <div id="pants-style-2" class="character-part pants-style-2 hidden"></div>
+                
+                <!-- Acessórios -->
+                <div id="glasses" class="character-part glasses hidden">
+                    <svg viewBox="0 0 140 50">
+                        <path d="M 10 25 C 20 5, 50 5, 60 25 M 80 25 C 90 5, 120 5, 130 25" />
+                        <path d="M 60 25 L 80 25" />
+                    </svg>
+                </div>
+                <div id="hat" class="character-part hat hidden"></div>
+
+                <div id="skin-head" class="character-part head bg-[#FDE6E6]"></div>
+                <!-- Detalhes do rosto usando SVG para mais expressividade -->
+                <div id="face-details" class="character-part face-details">
+                    <svg viewBox="0 0 150 120">
+                        <path id="nose-path" d="M 75 70 C 70 80, 80 80, 75 70" stroke="rgba(0, 0, 0, 0.1)" stroke-width="2" fill="none" />
+                        <path id="mouth-path" d="M 60 95 C 70 105, 80 105, 90 95" stroke="black" stroke-width="3" fill="none" />
+                    </svg>
+                </div>
+                
+                <div id="eyes" class="character-part eyes">
+                    <div class="eye"><div id="left-iris" class="iris bg-[#8A2BE2]"></div></div>
+                    <div class="eye"><div id="right-iris" class="iris bg-[#8A2BE2]"></div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Painel de Controlo -->
+        <div class="lg:w-1/2 flex flex-col gap-6 text-white">
+            <h1 class="text-3xl font-bold text-center drop-shadow-lg">Criador de Personagens</h1>
+            
+            <!-- Opções de Cor da Pele -->
+            <div>
+                <h2 class="text-xl font-semibold mb-2">Cor da Pele</h2>
+                <div id="skin-color-options" class="flex flex-wrap gap-2">
+                    <button data-color="#FDE6E6" class="w-8 h-8 rounded-full control-button bg-red-200 hover:scale-105"></button>
+                    <button data-color="#FDBA74" class="w-8 h-8 rounded-full control-button bg-orange-300 hover:scale-105"></button>
+                    <button data-color="#A16207" class="w-8 h-8 rounded-full control-button bg-amber-700 hover:scale-105"></button>
+                </div>
+            </div>
+
+            <!-- Estilos de Cabelo -->
+            <div>
+                <h2 class="text-xl font-semibold mb-2">Estilos de Cabelo</h2>
+                <div id="hair-style-options" class="flex flex-wrap gap-2">
+                    <button data-style="hair-style-1" class="w-12 h-12 rounded-lg control-button hover:scale-105">#1</button>
+                    <button data-style="hair-style-2" class="w-12 h-12 rounded-lg control-button hover:scale-105">#2</button>
+                </div>
+            </div>
+            
+            <!-- Opções de Cabelo -->
+            <div>
+                <h2 class="text-xl font-semibold mb-2">Cor do Cabelo</h2>
+                <div id="hair-color-options" class="flex flex-wrap gap-2">
+                    <button data-color="black" class="w-8 h-8 rounded-full control-button bg-black hover:scale-105"></button>
+                    <button data-color="#D2691E" class="w-8 h-8 rounded-full control-button bg-amber-800 hover:scale-105"></button>
+                    <button data-color="#F5F5DC" class="w-8 h-8 rounded-full control-button bg-stone-100 hover:scale-105"></button>
+                    <button data-color="#FFC0CB" class="w-8 h-8 rounded-full control-button bg-pink-300 hover:scale-105"></button>
+                </div>
+            </div>
+            
+            <!-- Opções de Olhos -->
+            <div>
+                <h2 class="text-xl font-semibold mb-2">Cor dos Olhos</h2>
+                <div id="eye-color-options" class="flex flex-wrap gap-2">
+                    <button data-color="#8A2BE2" class="w-8 h-8 rounded-full control-button bg-purple-600 hover:scale-105"></button>
+                    <button data-color="#3B82F6" class="w-8 h-8 rounded-full control-button bg-blue-500 hover:scale-105"></button>
+                    <button data-color="#15803D" class="w-8 h-8 rounded-full control-button bg-green-700 hover:scale-105"></button>
+                    <button data-color="#93C5FD" class="w-8 h-8 rounded-full control-button bg-blue-300 hover:scale-105"></button>
+                </div>
+            </div>
+
+            <!-- Estilos de Camisa -->
+            <div>
+                <h2 class="text-xl font-semibold mb-2">Estilos de Camisa</h2>
+                <div id="shirt-style-options" class="flex flex-wrap gap-2">
+                    <button data-style="shirt-style-1" class="w-12 h-12 rounded-lg control-button hover:scale-105">#1</button>
+                    <button data-style="shirt-style-2" class="w-12 h-12 rounded-lg control-button hover:scale-105">#2</button>
+                </div>
+            </div>
+
+            <!-- Opções de Roupas -->
+            <div>
+                <h2 class="text-xl font-semibold mb-2">Cor da Camisa</h2>
+                <div id="shirt-color-options" class="flex flex-wrap gap-2">
+                    <button data-color="#F87171" class="w-8 h-8 rounded-lg control-button bg-red-400 hover:scale-105"></button>
+                    <button data-color="#3B82F6" class="w-8 h-8 rounded-lg control-button bg-blue-500 hover:scale-105"></button>
+                    <button data-color="#34D399" class="w-8 h-8 rounded-lg control-button bg-emerald-400 hover:scale-105"></button>
+                    <button data-color="#FCD34D" class="w-8 h-8 rounded-lg control-button bg-amber-300 hover:scale-105"></button>
+                </div>
+            </div>
+
+            <!-- Estilos de Calças -->
+            <div>
+                <h2 class="text-xl font-semibold mb-2">Estilos de Calças</h2>
+                <div id="pants-style-options" class="flex flex-wrap gap-2">
+                    <button data-style="pants-style-1" class="w-12 h-12 rounded-lg control-button hover:scale-105">#1</button>
+                    <button data-style="pants-style-2" class="w-12 h-12 rounded-lg control-button hover:scale-105">#2</button>
+                </div>
+            </div>
+
+            <!-- Opções de Calças -->
+            <div>
+                <h2 class="text-xl font-semibold mb-2">Cor das Calças</h2>
+                <div id="pants-color-options" class="flex flex-wrap gap-2">
+                    <button data-color="#4B5563" class="w-8 h-8 rounded-lg control-button bg-gray-600 hover:scale-105"></button>
+                    <button data-color="#D97706" class="w-8 h-8 rounded-lg control-button bg-amber-600 hover:scale-105"></button>
+                    <button data-color="#1D4ED8" class="w-8 h-8 rounded-lg control-button bg-blue-700 hover:scale-105"></button>
+                </div>
+            </div>
+            
+            <!-- Opções de Acessórios -->
+            <div>
+                <h2 class="text-xl font-semibold mb-2">Acessórios</h2>
+                <div id="accessory-options" class="flex flex-wrap gap-2">
+                    <button data-accessory="glasses" class="w-12 h-12 rounded-lg control-button hover:scale-105">Óculos</button>
+                    <button data-accessory="hat" class="w-12 h-12 rounded-lg control-button hover:scale-105">Boné</button>
+                </div>
+            </div>
+            
+        </div>
+    </main>
+</body>
+</html>
