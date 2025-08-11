@@ -1,188 +1,82 @@
-<script>
-    // Mapeia os elementos do DOM que serão alterados
-    const skinParts = document.querySelectorAll('#skin-head, #skin-body, #skin-left-arm, #skin-right-arm, #skin-left-leg, #skin-right-leg');
-    const leftIris = document.getElementById('left-iris');
-    const rightIris = document.getElementById('right-iris');
-    const glassesElement = document.getElementById('glasses');
-    const hatElement = document.getElementById('hat');
-    
-    // Estado atual do personagem
-    const characterState = {
-        hairStyleId: 'hair-style-1',
-        shirtStyleId: 'shirt-style-1',
-        pantsStyleId: 'pants-style-1',
-    };
+document.addEventListener('DOMContentLoaded', () => {
 
-    // Mapeia os botões de controlo
-    const skinColorOptions = document.getElementById('skin-color-options');
-    const hairColorOptions = document.getElementById('hair-color-options');
-    const hairStyleOptions = document.getElementById('hair-style-options');
-    const eyeColorOptions = document.getElementById('eye-color-options');
-    const shirtColorOptions = document.getElementById('shirt-color-options');
-    const shirtStyleOptions = document.getElementById('shirt-style-options');
-    const pantsColorOptions = document.getElementById('pants-color-options');
-    const pantsStyleOptions = document.getElementById('pants-style-options');
+    // Função auxiliar para remover a classe 'active-button'
+    function removeActiveClass(containerId) {
+        const container = document.getElementById(containerId);
+        if (container) {
+            const buttons = container.querySelectorAll('.control-button');
+            buttons.forEach(btn => btn.classList.remove('active-button'));
+        }
+    }
+
+    // Gerenciador de eventos para estilos de cabelo
+    const hairOptions = document.getElementById('hair-style-options');
+    const hairImg = document.getElementById('hair');
+    if (hairOptions && hairImg) {
+        hairOptions.addEventListener('click', (e) => {
+            const newStyle = e.target.dataset.style;
+            if (newStyle) {
+                removeActiveClass('hair-style-options');
+                e.target.classList.add('active-button');
+                hairImg.src = `images/${newStyle}.png`;
+            }
+        });
+    }
+
+    // Gerenciador de eventos para estilos de camisa
+    const shirtOptions = document.getElementById('shirt-style-options');
+    const shirtImg = document.getElementById('shirt');
+    if (shirtOptions && shirtImg) {
+        shirtOptions.addEventListener('click', (e) => {
+            const newStyle = e.target.dataset.style;
+            if (newStyle) {
+                removeActiveClass('shirt-style-options');
+                e.target.classList.add('active-button');
+                shirtImg.src = `images/${newStyle}.png`;
+            }
+        });
+    }
+
+    // Gerenciador de eventos para estilos de calças
+    const pantsOptions = document.getElementById('pants-style-options');
+    const pantsImg = document.getElementById('pants');
+    if (pantsOptions && pantsImg) {
+        pantsOptions.addEventListener('click', (e) => {
+            const newStyle = e.target.dataset.style;
+            if (newStyle) {
+                removeActiveClass('pants-style-options');
+                e.target.classList.add('active-button');
+                pantsImg.src = `images/${newStyle}.png`;
+            }
+        });
+    }
+
+    // Gerenciador de eventos para acessórios (alternar visibilidade)
     const accessoryOptions = document.getElementById('accessory-options');
-
-    /**
-     * Atualiza a seleção visual dos botões
-     * @param {HTMLElement} container O elemento pai que contém os botões
-     * @param {HTMLElement} newSelection O botão que deve ser selecionado
-     */
-    function updateButtonSelection(container, newSelection) {
-        container.querySelectorAll('button').forEach(btn => {
-            btn.classList.remove('selected');
-        });
-        if (newSelection) {
-            newSelection.classList.add('selected');
-        }
-    }
-    
-    /**
-     * Inicializa o estado do personagem e dos botões ao carregar a página
-     */
-    function initializeCharacterAndControls() {
-        // Define os estilos e cores iniciais do personagem
-        document.getElementById(characterState.hairStyleId).style.backgroundColor = 'black';
-        document.getElementById(characterState.shirtStyleId).style.backgroundColor = '#F87171';
-        document.getElementById(characterState.pantsStyleId).style.backgroundColor = '#4B5563';
-
-        // Define a cor dos olhos inicial
-        leftIris.style.backgroundColor = '#8A2BE2';
-        rightIris.style.backgroundColor = '#8A2BE2';
-        
-        // Define o estado inicial dos botões selecionados
-        updateButtonSelection(skinColorOptions, skinColorOptions.querySelector('button[data-color="#FDE6E6"]'));
-        updateButtonSelection(hairStyleOptions, hairStyleOptions.querySelector('button[data-style="hair-style-1"]'));
-        updateButtonSelection(hairColorOptions, hairColorOptions.querySelector('button[data-color="black"]'));
-        updateButtonSelection(eyeColorOptions, eyeColorOptions.querySelector('button[data-color="#8A2BE2"]'));
-        updateButtonSelection(shirtStyleOptions, shirtStyleOptions.querySelector('button[data-style="shirt-style-1"]'));
-        updateButtonSelection(shirtColorOptions, shirtColorOptions.querySelector('button[data-color="#F87171"]'));
-        updateButtonSelection(pantsStyleOptions, pantsStyleOptions.querySelector('button[data-style="pants-style-1"]'));
-        updateButtonSelection(pantsColorOptions, pantsColorOptions.querySelector('button[data-color="#4B5563"]'));
-    }
-
-    /**
-     * Adiciona listeners de evento para os botões de cor
-     * @param {HTMLElement} container O elemento pai que contém os botões
-     * @param {Function} updateFunction A função que será chamada para atualizar a cor
-     */
-    function addColorEventListeners(container, updateFunction) {
-        container.addEventListener('click', (event) => {
-            const button = event.target.closest('button');
-            if (button) {
-                const color = button.dataset.color;
-                updateFunction(color);
-                updateButtonSelection(container, button);
-            }
-        });
-    }
-    
-    /**
-     * Adiciona listeners de evento para os botões de estilo
-     * @param {HTMLElement} container O elemento pai que contém os botões
-     * @param {string} partType O tipo de peça (ex: 'hair', 'shirt')
-     */
-    function addStyleEventListeners(container, partType) {
-        container.addEventListener('click', (event) => {
-            const button = event.target.closest('button');
-            if (button) {
-                const newStyleId = button.dataset.style;
-                // Esconde o estilo antigo
-                const oldPart = document.getElementById(characterState[partType + 'StyleId']);
-                if (oldPart) {
-                    oldPart.classList.add('hidden');
-                }
-
-                // Mostra o novo estilo e atualiza o estado
-                const newPart = document.getElementById(newStyleId);
-                if (newPart) {
-                    newPart.classList.remove('hidden');
-                    
-                    // Garante que a cor do estilo anterior é copiada para o novo estilo
-                    const currentColor = oldPart.style.backgroundColor;
-                    if (currentColor) {
-                        newPart.style.backgroundColor = currentColor;
-                    }
-
-                    characterState[partType + 'StyleId'] = newStyleId;
-                }
-                updateButtonSelection(container, button);
-            }
-        });
-    }
-    
-    /**
-     * Adiciona listeners de evento para os acessórios
-     */
-    function addAccessoryEventListeners() {
-        accessoryOptions.addEventListener('click', (event) => {
-            const button = event.target.closest('button');
-            if (button) {
-                const accessoryId = button.dataset.accessory;
-                const accessoryElement = document.getElementById(accessoryId);
-                if (accessoryElement) {
-                    accessoryElement.classList.toggle('hidden');
-                    button.classList.toggle('selected');
+    if (accessoryOptions) {
+        accessoryOptions.addEventListener('click', (e) => {
+            const accessoryId = e.target.dataset.accessory;
+            if (accessoryId) {
+                e.target.classList.toggle('active-button');
+                const accessory = document.getElementById(accessoryId);
+                if (accessory) {
+                    accessory.classList.toggle('hidden');
                 }
             }
         });
     }
-
-    // Funções de atualização
-    const updateSkinColor = (color) => {
-        skinParts.forEach(part => part.style.backgroundColor = color);
-    };
-
-    const updateHairColor = (color) => {
-        const currentHairPart = document.getElementById(characterState.hairStyleId);
-        if (currentHairPart) {
-            currentHairPart.style.backgroundColor = color;
-        }
-    };
-
-    const updateEyeColor = (color) => {
-        leftIris.style.backgroundColor = color;
-        rightIris.style.backgroundColor = color;
-    };
-
-    const updateShirtColor = (color) => {
-        const currentShirtPart = document.getElementById(characterState.shirtStyleId);
-        if (currentShirtPart) {
-            currentShirtPart.style.backgroundColor = color;
-        }
-    };
     
-    const updatePantsColor = (color) => {
-        const currentPantsPart = document.getElementById(characterState.pantsStyleId);
-        if (currentPantsPart) {
-            currentPantsPart.style.backgroundColor = color;
-        }
-    };
-
-    // Adiciona os event listeners aos botões
-    addColorEventListeners(skinColorOptions, updateSkinColor);
-    addColorEventListeners(hairColorOptions, updateHairColor);
-    addColorEventListeners(eyeColorOptions, updateEyeColor);
-    addColorEventListeners(shirtColorOptions, updateShirtColor);
-    addColorEventListeners(pantsColorOptions, updatePantsColor);
-
-    // Adiciona os event listeners para os estilos
-    addStyleEventListeners(hairStyleOptions, 'hair');
-    addStyleEventListeners(shirtStyleOptions, 'shirt');
-    addStyleEventListeners(pantsStyleOptions, 'pants');
-    
-    // Adiciona event listeners para os acessórios
-    addAccessoryEventListeners();
-    
-    // Inicia o jogo ao carregar a página
-    document.addEventListener('DOMContentLoaded', initializeCharacterAndControls);
-    
-</script>
-
-
-
-
-
-
-
+    // Lógica para o botão de download
+    const downloadButton = document.getElementById('download-button');
+    if (downloadButton) {
+        downloadButton.addEventListener('click', () => {
+            const characterContainer = document.querySelector('.character-container');
+            if (characterContainer) {
+                // Instala e usa a biblioteca html2canvas para converter a div em imagem
+                // Esta parte exige que a biblioteca esteja instalada
+                // Ou você pode usar uma solução mais simples como a de SVG do seu código anterior, mas com algumas modificações para PNG
+                alert('A função de download precisa de uma biblioteca externa como html2canvas para funcionar. Copie a imagem manualmente por enquanto ou adicione a biblioteca.');
+            }
+        });
+    }
+});
