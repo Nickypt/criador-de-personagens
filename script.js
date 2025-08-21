@@ -85,3 +85,54 @@ accessoryOptions.addEventListener('click', (event) => {
         }
     }
 });
+
+
+
+// Adicione esta parte ao seu script.js
+// Lógica para mudar o estilo (a imagem) dos olhos
+const eyeStyleOptions = document.getElementById('eye-style-options');
+const eyesImg = document.getElementById('eyes');
+
+eyeStyleOptions.addEventListener('click', (event) => {
+    const target = event.target.closest('button');
+    if (target) {
+        // Remover a classe ativa de todos os botões de estilo de olho
+        document.querySelectorAll('#eye-style-options button').forEach(btn => {
+            btn.classList.remove('active-button');
+        });
+
+        // Adicionar a classe ativa ao botão clicado
+        target.classList.add('active-button');
+        
+        // Mudar a imagem dos olhos
+        const newStyle = target.getAttribute('data-style');
+        eyesImg.src = `images/${newStyle}.png`;
+    }
+});
+
+// Lógica para mudar a cor dos olhos
+const eyeColorOptions = document.getElementById('eye-color-options');
+
+eyeColorOptions.addEventListener('click', (event) => {
+    const target = event.target.closest('button');
+    if (target) {
+        // Remover a classe ativa de todos os botões de cor de olho
+        document.querySelectorAll('#eye-color-options button').forEach(btn => {
+            btn.classList.remove('active-button');
+        });
+
+        // Adicionar a classe ativa ao botão clicado
+        target.classList.add('active-button');
+        
+        // Obter a cor do atributo data-color
+        const newColor = target.getAttribute('data-color');
+        
+        // Aplicar a cor usando um filtro CSS
+        // O `filter: hue-rotate(...)` é a forma mais eficaz de mudar a cor de uma imagem PNG
+        // sem precisar ter várias imagens coloridas.
+        // No entanto, para cores específicas, o melhor é ter a imagem já colorida.
+        // Para simplificar, o ideal seria ter imagens separadas para cada cor,
+        // mas se for usar a mesma imagem para diferentes cores de olhos, o CSS filter é uma opção.
+        eyesImg.style.filter = `drop-shadow(0 0 0.75rem ${newColor})`;
+    }
+});
