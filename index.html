@@ -34,7 +34,14 @@
     <main id="game-interface" class="bg-white/30 backdrop-blur-lg rounded-3xl shadow-2xl p-8 max-w-7xl w-full flex flex-col lg:flex-row items-center justify-center gap-10 border border-white/20">
 
 <div class="game-start">
-  <button id="play-button" class="start-button">JOGAR</button>
+    <button id="play-button" class="start-button">JOGAR</button>
+</div>
+
+<div class="game-content" style="display: none;">
+    <div class="character-container">
+        </div>
+    <div class="controls-panel">
+        </div>
 </div>
 
         <div class="lg:w-1/2 flex items-center justify-center bg-white/20 rounded-xl p-4 shadow-inner border border-white/20">
@@ -54,8 +61,8 @@
     <h2 class="text-xl font-semibold mb-2 text-white">Pele</h2>
     <div id="skin-style-options" class="flex flex-wrap gap-2 justify-center">
         <button data-style="body-base1.png" class="w-16 h-16 rounded-lg control-button active-button bg-orange-50"></button>
-        <button data-style="body-base2.png" class="w-16 h-16 rounded-lg control-button bg-yellow-300"></button>
-        <button data-style="body-base3.png" class="w-16 h-16 rounded-lg control-button bg-amber-800"></button>
+        <button data-style="body-base2.png" class="w-16 h-16 rounded-lg control-button bg-hex-#efbe83"></button>
+        <button data-style="body-base3.png" class="w-16 h-16 rounded-lg control-button bg-#e8a34f"></button>
         <button data-style="body-base4.png" class="w-16 h-16 rounded-lg control-button bg-stone-900"></button>
         <button data-style="body-base5.png" class="w-16 h-16 rounded-lg control-button bg-rose-950"></button>
         <button data-style="body-base6.png" class="w-16 h-16 rounded-lg control-button bg-neutral-500"></button>

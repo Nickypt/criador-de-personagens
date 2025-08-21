@@ -1,9 +1,20 @@
-document.getElementById('play-button').addEventListener('click', function() {
-    const gameStart = document.querySelector('.game-start');
-    gameStart.style.opacity = '0';
-    setTimeout(() => {
-        gameStart.style.display = 'none';
-    }, 1000); // Garante que a animação termine antes de ocultar
+document.addEventListener('DOMContentLoaded', function() {
+    const playButton = document.getElementById('play-button');
+    const gameStartScreen = document.querySelector('.game-start');
+    const gameContent = document.querySelector('.game-content');
+
+    if (playButton && gameStartScreen && gameContent) {
+        playButton.addEventListener('click', function() {
+            // Inicia a transição de opacidade para a tela inicial
+            gameStartScreen.style.opacity = '0';
+            
+            // Aguarda a transição terminar antes de esconder a tela e mostrar o jogo
+            setTimeout(function() {
+                gameStartScreen.style.display = 'none';
+                gameContent.style.display = 'flex'; // ou 'block', dependendo do seu layout
+            }, 1000); // 1000ms = 1 segundo, igual à transição no CSS
+        });
+    }
 });
 
 
