@@ -1,3 +1,15 @@
+document.getElementById('play-button').addEventListener('click', function() {
+    const gameStart = document.querySelector('.game-start');
+    gameStart.style.opacity = '0';
+    setTimeout(() => {
+        gameStart.style.display = 'none';
+    }, 1000); // Garante que a animação termine antes de ocultar
+});
+
+
+
+
+
 // Get the character image parts
 const bodyBase = document.getElementById('body-base');
 const pants = document.getElementById('pants');
