@@ -1,82 +1,64 @@
-document.addEventListener('DOMContentLoaded', () => {
+// Get the character image parts
+const bodyBase = document.getElementById('body-base');
+const pants = document.getElementById('pants');
+const shirt = document.getElementById('shirt');
+const hair = document.getElementById('hair');
+const glasses = document.getElementById('glasses');
 
-    // Função auxiliar para remover a classe 'active-button'
-    function removeActiveClass(containerId) {
-        const container = document.getElementById(containerId);
-        if (container) {
-            const buttons = container.querySelectorAll('.control-button');
-            buttons.forEach(btn => btn.classList.remove('active-button'));
+// Get the option containers
+const skinStyleOptions = document.getElementById('skin-style-options');
+const pantsStyleOptions = document.getElementById('pants-style-options');
+const shirtStyleOptions = document.getElementById('shirt-style-options');
+const hairStyleOptions = document.getElementById('hair-style-options');
+const accessoryOptions = document.getElementById('accessory-options');
+
+// Helper function to update character parts and active buttons
+function updateCharacter(part, newSrc) {
+    part.src = `images/${newSrc}.png`;
+}
+
+// Function to handle button clicks for a specific section
+function handleOptionClick(container, part) {
+    container.addEventListener('click', (event) => {
+        const clickedButton = event.target.closest('button');
+        if (clickedButton) {
+            container.querySelectorAll('.control-button').forEach(btn => btn.classList.remove('active-button'));
+            clickedButton.classList.add('active-button');
+            const newStyle = clickedButton.getAttribute('data-style');
+            if (newStyle) {
+                updateCharacter(part, newStyle);
+            }
+        }
+    });
+}
+
+// Event listeners for different sections
+handleOptionClick(pantsStyleOptions, pants);
+handleOptionClick(shirtStyleOptions, shirt);
+handleOptionClick(hairStyleOptions, hair);
+
+// Special case for skin color because it uses different file paths
+skinStyleOptions.addEventListener('click', (event) => {
+    const clickedButton = event.target.closest('button');
+    if (clickedButton) {
+        skinStyleOptions.querySelectorAll('.control-button').forEach(btn => btn.classList.remove('active-button'));
+        clickedButton.classList.add('active-button');
+        const newSrc = clickedButton.getAttribute('data-style');
+        if (newSrc) {
+            bodyBase.src = newSrc;
         }
     }
+});
 
-    // Gerenciador de eventos para estilos de cabelo
-    const hairOptions = document.getElementById('hair-style-options');
-    const hairImg = document.getElementById('hair');
-    if (hairOptions && hairImg) {
-        hairOptions.addEventListener('click', (e) => {
-            const newStyle = e.target.dataset.style;
-            if (newStyle) {
-                removeActiveClass('hair-style-options');
-                e.target.classList.add('active-button');
-                hairImg.src = `images/${newStyle}.png`;
-            }
-        });
-    }
-
-    // Gerenciador de eventos para estilos de camisa
-    const shirtOptions = document.getElementById('shirt-style-options');
-    const shirtImg = document.getElementById('shirt');
-    if (shirtOptions && shirtImg) {
-        shirtOptions.addEventListener('click', (e) => {
-            const newStyle = e.target.dataset.style;
-            if (newStyle) {
-                removeActiveClass('shirt-style-options');
-                e.target.classList.add('active-button');
-                shirtImg.src = `images/${newStyle}.png`;
-            }
-        });
-    }
-
-    // Gerenciador de eventos para estilos de calças
-    const pantsOptions = document.getElementById('pants-style-options');
-    const pantsImg = document.getElementById('pants');
-    if (pantsOptions && pantsImg) {
-        pantsOptions.addEventListener('click', (e) => {
-            const newStyle = e.target.dataset.style;
-            if (newStyle) {
-                removeActiveClass('pants-style-options');
-                e.target.classList.add('active-button');
-                pantsImg.src = `images/${newStyle}.png`;
-            }
-        });
-    }
-
-    // Gerenciador de eventos para acessórios (alternar visibilidade)
-    const accessoryOptions = document.getElementById('accessory-options');
-    if (accessoryOptions) {
-        accessoryOptions.addEventListener('click', (e) => {
-            const accessoryId = e.target.dataset.accessory;
-            if (accessoryId) {
-                e.target.classList.toggle('active-button');
-                const accessory = document.getElementById(accessoryId);
-                if (accessory) {
-                    accessory.classList.toggle('hidden');
-                }
-            }
-        });
-    }
-    
-    // Lógica para o botão de download
-    const downloadButton = document.getElementById('download-button');
-    if (downloadButton) {
-        downloadButton.addEventListener('click', () => {
-            const characterContainer = document.querySelector('.character-container');
-            if (characterContainer) {
-                // Instala e usa a biblioteca html2canvas para converter a div em imagem
-                // Esta parte exige que a biblioteca esteja instalada
-                // Ou você pode usar uma solução mais simples como a de SVG do seu código anterior, mas com algumas modificações para PNG
-                alert('A função de download precisa de uma biblioteca externa como html2canvas para funcionar. Copie a imagem manualmente por enquanto ou adicione a biblioteca.');
-            }
-        });
+// Accessory toggle
+accessoryOptions.addEventListener('click', (event) => {
+    const clickedButton = event.target.closest('button');
+    if (clickedButton) {
+        const accessoryId = clickedButton.getAttribute('data-accessory');
+        const accessoryPart = document.getElementById(accessoryId);
+        if (accessoryPart) {
+            accessoryPart.classList.toggle('hidden');
+            clickedButton.classList.toggle('active-button');
+        }
     }
 });
