@@ -1,22 +1,21 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', () => {
     const playButton = document.getElementById('play-button');
-    const gameStartScreen = document.querySelector('.game-start');
-    const gameContent = document.querySelector('.game-content');
+    const gameStart = document.getElementById('game-start');
+    const gameContent = document.getElementById('game-content');
+    const characterContainer = document.querySelector('.character-container');
 
-    if (playButton && gameStartScreen && gameContent) {
-        playButton.addEventListener('click', function() {
-            // Inicia a transição de opacidade para a tela inicial
-            gameStartScreen.style.opacity = '0';
-            
-            // Aguarda a transição terminar antes de esconder a tela e mostrar o jogo
-            setTimeout(function() {
-                gameStartScreen.style.display = 'none';
-                gameContent.style.display = 'flex'; // ou 'block', dependendo do seu layout
-            }, 1000); // 1000ms = 1 segundo, igual à transição no CSS
-        });
+    // Função para iniciar o jogo
+    const startGame = () => {
+        gameStart.classList.add('hidden'); // Oculta a tela de início
+        gameContent.classList.remove('hidden'); // Mostra a tela de personalização
+        gameContent.classList.add('flex-col', 'lg:flex-row'); // Adiciona as classes de layout
+    };
+
+    // Adiciona o evento de clique ao botão JOGAR
+    if (playButton) {
+        playButton.addEventListener('click', startGame);
     }
 });
-
 
 
 
