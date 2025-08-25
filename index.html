@@ -8,10 +8,8 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
 
-        /* Removido: A altura fixa de 300px foi removida para usar a proporção do Tailwind */
         .character-container {
             position: relative;
-            width: 300px;
         }
         .character-part {
             position: absolute;
@@ -27,118 +25,124 @@
         body {
             font-family: 'Inter', sans-serif;
         }
+        .start-button {
+            padding: 1rem 2.5rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #ffffff;
+            background: #4f46e5;
+            border-radius: 9999px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease-in-out;
+        }
+        .start-button:hover {
+            transform: scale(1.05);
+            background: #6366f1;
+        }
     </style>
 </head>
 <body class="bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center min-h-screen p-4">
 
     <main id="game-interface" class="bg-white/30 backdrop-blur-lg rounded-3xl shadow-2xl p-8 max-w-7xl w-full flex flex-col lg:flex-row items-center justify-center gap-10 border border-white/20">
 
-<div class="game-start">
-    <button id="play-button" class="start-button">JOGAR</button>
-</div>
-
-<div class="game-content" style="display: none;">
-    <div class="character-container">
-        </div>
-    <div class="controls-panel">
-        </div>
-</div>
-
-        <div class="lg:w-1/2 flex items-center justify-center bg-white/20 rounded-xl p-4 shadow-inner border border-white/20">
-        <div class="character-container w-full aspect-square max-w-sm">
-        <img id="body-base" class="character-part" src="body-base1.png" alt="Corpo do personagem">
-        <img id="pants" class="character-part" src="images/pants_1.png" alt="Calças do personagem">
-        <img id="shirt" class="character-part" src="images/shirt_1.png" alt="Camisa do personagem">
-        <img id="eyes" class="character-part" src="images/eyes_1.png" alt="Olhos do personagem">
-        <img id="hair" class="character-part" src="images/hair_1.png" alt="Cabelo do personagem">
-        <img id="glasses" class="character-part hidden" src="images/glasses_1.png" alt="Óculos do personagem">
-    </div>
-</div>
-
-        <div class="lg:w-1/2 flex flex-col gap-6 text-white overflow-y-auto max-h-[80vh]">
-            <h1 class="text-3xl font-bold text-center drop-shadow-lg">Personalizar Personagem</h1>
-
-         <div class="flex flex-col items-center">
-  <h2 class="text-xl font-semibold mb-2 text-white">Pele</h2>
-  <div id="skin-style-options" class="flex flex-wrap gap-2 justify-center">
-    <button data-style="body-base1.png" class="w-16 h-16 rounded-lg control-button active-button bg-[#c58f66]"></button>
-    <button data-style="body-base2.png" class="w-16 h-16 rounded-lg control-button bg-[#e3b889]"></button>
-    <button data-style="body-base3.png" class="w-16 h-16 rounded-lg control-button bg-[#8a5a44]"></button>
-    <button data-style="body-base4.png" class="w-16 h-16 rounded-lg control-button bg-[#4f2c25]"></button>
-    <button data-style="body-base5.png" class="w-16 h-16 rounded-lg control-button bg-[#f5f5dc]"></button>
-    <button data-style="body-base6.png" class="w-16 h-16 rounded-lg control-button bg-[#d4a79c]"></button>
-    <button data-style="body-base7.png" class="w-16 h-16 rounded-lg control-button bg-[#808080]"></button>
-  </div>
-</div>
-
-
-<div class="control-section">
-    <h2 class="text-xl font-semibold mb-2 text-white">Olhos</h2>
-    <div class="flex flex-col gap-4">
-        <div>
-            <h3 class="font-medium text-white">Estilo</h3>
-            <div id="eye-style-options" class="flex flex-wrap gap-2">
-                <button data-style="eyes_1" class="w-16 h-16 rounded-lg control-button active-button">#1</button>
-                <button data-style="eyes_2" class="w-16 h-16 rounded-lg control-button">#2</button>
-                <button data-style="eyes_3" class="w-16 h-16 rounded-lg control-button">#3</button>
-            </div>
+                <div id="game-start" class="flex flex-col items-center justify-center text-center p-8">
+            <h1 class="text-4xl lg:text-5xl font-extrabold text-white mb-6 drop-shadow-lg">Criador de Personagens</h1>
+            <p class="text-lg text-white mb-10 max-w-lg">Crie e personalize seu avatar único, escolhendo diferentes estilos de pele, cabelo, olhos e roupas.</p>
+            <button id="play-button" class="start-button">JOGAR</button>
         </div>
 
-        <div>
-            <h3 class="font-medium text-white">Cor dos Olhos</h3>
-            <div id="eye-color-options" class="flex flex-wrap gap-2">
-                <button data-color="#4e8cff" class="w-12 h-12 rounded-full control-button active-button bg-[#4e8cff]"></button>
-                <button data-color="#1c4e18" class="w-12 h-12 rounded-full control-button bg-[#1c4e18]"></button>
-                <button data-color="#c16a24" class="w-12 h-12 rounded-full control-button bg-[#c16a24]"></button>
-                <button data-color="#9d9d9d" class="w-12 h-12 rounded-full control-button bg-[#9d9d9d]"></button>
-                <button data-color="#000000" class="w-12 h-12 rounded-full control-button bg-[#000000]"></button>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-
-
-
-
-            <div>
-                <h2 class="text-xl font-semibold mb-2">Cabelo</h2>
-                <div id="hair-style-options" class="flex flex-wrap gap-2">
-                    <button data-style="hair_1" class="w-16 h-16 rounded-lg control-button active-button">#1</button>
-                    <button data-style="hair_2" class="w-16 h-16 rounded-lg control-button">#2</button>
-                </div>
-            </div>
-
-            <div>
-                <h2 class="text-xl font-semibold mb-2">Roupas</h2>
-                <div class="mb-2">
-                    <h3 class="font-medium">Camisa</h3>
-                    <div id="shirt-style-options" class="flex flex-wrap gap-2">
-                        <button data-style="shirt_1" class="w-16 h-16 rounded-lg control-button active-button">#1</button>
-                        <button data-style="shirt_2" class="w-16 h-16 rounded-lg control-button">#2</button>
+                <div id="game-content" class="hidden w-full flex-col lg:flex-row items-center justify-center gap-10">
+                <div class="lg:w-1/2 flex items-center justify-center bg-white/20 rounded-xl p-4 shadow-inner border border-white/20">
+                    <div class="character-container w-full aspect-square max-w-sm">
+                        <img id="body-base" class="character-part" src="body-base1.png" alt="Corpo do personagem">
+                        <img id="pants" class="character-part" src="images/pants_1.png" alt="Calças do personagem">
+                        <img id="shirt" class="character-part" src="images/shirt_1.png" alt="Camisa do personagem">
+                        <img id="eyes" class="character-part" src="images/eyes_1.png" alt="Olhos do personagem">
+                        <img id="hair" class="character-part" src="images/hair_1.png" alt="Cabelo do personagem">
+                        <img id="glasses" class="character-part hidden" src="images/glasses_1.png" alt="Óculos do personagem">
                     </div>
                 </div>
-                <div>
-                    <h3 class="font-medium">Calças</h3>
-                    <div id="pants-style-options" class="flex flex-wrap gap-2">
-                        <button data-style="pants_1" class="w-16 h-16 rounded-lg control-button active-button">#1</button>
-                        <button data-style="pants_2" class="w-16 h-16 rounded-lg control-button">#2</button>
+
+                <div class="lg:w-1/2 flex flex-col gap-6 text-white overflow-y-auto max-h-[80vh]">
+                    <h1 class="text-3xl font-bold text-center drop-shadow-lg">Personalizar Personagem</h1>
+
+                    <div class="flex flex-col items-center">
+                        <h2 class="text-xl font-semibold mb-2 text-white">Pele</h2>
+                        <div id="skin-style-options" class="flex flex-wrap gap-2 justify-center">
+                            <button data-style="body-base1.png" class="w-16 h-16 rounded-lg control-button active-button bg-[#c58f66]"></button>
+                            <button data-style="body-base2.png" class="w-16 h-16 rounded-lg control-button bg-[#e3b889]"></button>
+                            <button data-style="body-base3.png" class="w-16 h-16 rounded-lg control-button bg-[#8a5a44]"></button>
+                            <button data-style="body-base4.png" class="w-16 h-16 rounded-lg control-button bg-[#4f2c25]"></button>
+                            <button data-style="body-base5.png" class="w-16 h-16 rounded-lg control-button bg-[#f5f5dc]"></button>
+                            <button data-style="body-base6.png" class="w-16 h-16 rounded-lg control-button bg-[#d4a79c]"></button>
+                            <button data-style="body-base7.png" class="w-16 h-16 rounded-lg control-button bg-[#808080]"></button>
+                        </div>
                     </div>
-                </div>
-            </div>
 
-            <div>
-                <h2 class="text-xl font-semibold mb-2">Acessórios</h2>
-                <div id="accessory-options" class="flex flex-wrap gap-2">
-                    <button data-accessory="glasses" class="w-16 h-16 rounded-lg control-button">Óculos</button>
-                </div>
-            </div>
+                    <div class="control-section">
+                        <h2 class="text-xl font-semibold mb-2 text-white">Olhos</h2>
+                        <div class="flex flex-col gap-4">
+                            <div>
+                                <h3 class="font-medium text-white">Estilo</h3>
+                                <div id="eye-style-options" class="flex flex-wrap gap-2">
+                                    <button data-style="eyes_1" class="w-16 h-16 rounded-lg control-button active-button">#1</button>
+                                    <button data-style="eyes_2" class="w-16 h-16 rounded-lg control-button">#2</button>
+                                    <button data-style="eyes_3" class="w-16 h-16 rounded-lg control-button">#3</button>
+                                </div>
+                            </div>
 
-            <button id="download-button" class="px-8 py-4 bg-white text-indigo-600 rounded-full font-bold text-xl shadow-lg hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 mt-6">
-                Baixar Imagem
-            </button>
+                            <div>
+                                <h3 class="font-medium text-white">Cor dos Olhos</h3>
+                                <div id="eye-color-options" class="flex flex-wrap gap-2">
+                                    <button data-color="#4e8cff" class="w-12 h-12 rounded-full control-button active-button bg-[#4e8cff]"></button>
+                                    <button data-color="#1c4e18" class="w-12 h-12 rounded-full control-button bg-[#1c4e18]"></button>
+                                    <button data-color="#c16a24" class="w-12 h-12 rounded-full control-button bg-[#c16a24]"></button>
+                                    <button data-color="#9d9d9d" class="w-12 h-12 rounded-full control-button bg-[#9d9d9d]"></button>
+                                    <button data-color="#000000" class="w-12 h-12 rounded-full control-button bg-[#000000]"></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h2 class="text-xl font-semibold mb-2">Cabelo</h2>
+                        <div id="hair-style-options" class="flex flex-wrap gap-2">
+                            <button data-style="hair_1" class="w-16 h-16 rounded-lg control-button active-button">#1</button>
+                            <button data-style="hair_2" class="w-16 h-16 rounded-lg control-button">#2</button>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h2 class="text-xl font-semibold mb-2">Roupas</h2>
+                        <div class="mb-2">
+                            <h3 class="font-medium">Camisa</h3>
+                            <div id="shirt-style-options" class="flex flex-wrap gap-2">
+                                <button data-style="shirt_1" class="w-16 h-16 rounded-lg control-button active-button">#1</button>
+                                <button data-style="shirt_2" class="w-16 h-16 rounded-lg control-button">#2</button>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="font-medium">Calças</h3>
+                            <div id="pants-style-options" class="flex flex-wrap gap-2">
+                                <button data-style="pants_1" class="w-16 h-16 rounded-lg control-button active-button">#1</button>
+                                <button data-style="pants_2" class="w-16 h-16 rounded-lg control-button">#2</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h2 class="text-xl font-semibold mb-2">Acessórios</h2>
+                        <div id="accessory-options" class="flex flex-wrap gap-2">
+                            <button data-accessory="glasses" class="w-16 h-16 rounded-lg control-button">Óculos</button>
+                        </div>
+                    </div>
+
+                    <button id="download-button" class="px-8 py-4 bg-white text-indigo-600 rounded-full font-bold text-xl shadow-lg hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 mt-6">
+                        Baixar Imagem
+                    </button>
+                </div>
         </div>
+
     </main>
 
     <script src="script.js"></script>
