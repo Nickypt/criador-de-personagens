@@ -1,9 +1,6 @@
-
-
-/* Estilos Gerais do Jogo */
+/* Estilos Gerais do Jogo e Animações de Fundo */
 body {
     font-family: 'Inter', sans-serif;
-    /* Gradiente de fundo suave para um visual mais premium e dinâmico */
     background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
     color: #E0F2F1;
     min-height: 100vh;
@@ -12,13 +9,16 @@ body {
     align-items: center;
     margin: 0;
     overflow: hidden;
-    /* Transição suave para um efeito de carregamento ou mudança de tela */
     transition: background 1s ease-in-out;
 }
 
-/* Container do Início do Jogo */
+/* ----------------------------------- */
+/* Seção Inicial do Jogo (Tela de Abertura) */
+/* ----------------------------------- */
+
 .game-start {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     position: fixed;
@@ -26,21 +26,19 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    /* Fundo escuro com efeito de desfoque, criando uma camada de sobreposição */
     background-color: rgba(0, 0, 0, 0.85);
     backdrop-filter: blur(12px);
     z-index: 100;
     transition: opacity 1s ease-in-out;
+    text-align: center;
 }
 
-/* Botão de "Jogar" */
 .start-button {
-    padding: 18px 50px; /* Aumentado para mais destaque */
+    padding: 18px 50px;
     font-family: 'Inter', sans-serif;
-    font-size: 26px; /* Aumentado para melhor visibilidade */
+    font-size: 26px;
     font-weight: bold;
     color: white;
-    /* Gradiente de cor mais vibrante para um visual atraente */
     background-image: linear-gradient(45deg, #FF6B6B, #F06595);
     border: none;
     border-radius: 50px;
@@ -50,12 +48,11 @@ body {
     text-transform: uppercase;
     letter-spacing: 2px;
     position: relative;
-    /* Efeito de luz sutil para dar vida ao botão */
     animation: pulse 2s infinite;
 }
 
 .start-button:hover {
-    transform: translateY(-8px) scale(1.08); /* Efeito de elevação mais pronunciado */
+    transform: translateY(-8px) scale(1.08);
     box-shadow: 0 12px 25px rgba(0, 0, 0, 0.5);
 }
 
@@ -65,43 +62,83 @@ body {
     100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(240, 101, 149, 0); }
 }
 
-/* Container Principal do Jogo */
+/* ----------------------------------- */
+/* Seção do Jogo Principal (Character Creator) */
+/* ----------------------------------- */
+
+/* Container Principal do Jogo com Flexbox para Layout Lado a Lado */
 .game-container {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: flex-start;
-    gap: 40px; /* Aumentado para melhor espaçamento entre os elementos */
+    gap: 40px;
     width: 90%;
     max-width: 1200px;
     padding: 20px;
 }
 
-/* Container do Personagem (Card de "Vidro Fosco") */
-.character-container {
-    position: relative;
-    width: 300px;
-    height: 450px;
-    /* Efeito de "vidro fosco" com bordas arredondadas e sombra forte */
+@media (min-width: 1024px) {
+    .game-container {
+        flex-direction: row; /* Layout lado a lado em telas maiores */
+        align-items: center;
+    }
+}
+
+/* Card de "Vidro Fosco" para o Personagem */
+.character-preview {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
     border-radius: 20px;
     background-color: rgba(255, 255, 255, 0.15);
     border: 1px solid rgba(255, 255, 255, 0.3);
     box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
     backdrop-filter: blur(8px);
     overflow: hidden;
-    transform: perspective(1000px) rotateY(10deg); /* Tilt sutil para um visual 3D */
-    transition: transform 0.5s ease;
+    transform: perspective(1000px) rotateY(10deg);
+    transition: transform 0.5s ease, background-color 0.3s;
 }
 
-.character-container:hover {
-    transform: perspective(1000px) rotateY(0deg); /* Endireita o card ao passar o mouse */
+.character-preview:hover {
+    transform: perspective(1000px) rotateY(0deg);
 }
 
+/* Container de Posição Relativa para as Partes do Personagem */
+.character-container {
+    position: relative;
+    width: 300px;
+    height: 450px;
+    aspect-ratio: 1 / 1.5; /* Mantém a proporção */
+}
+
+/* Animação para a transição das partes do personagem */
 .character-part {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    will-change: transform, opacity;
+}
+
+.rotate-in {
+    animation: rotateIn 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+
+@keyframes rotateIn {
+    from {
+        transform: rotate(-10deg) scale(0.8);
+        opacity: 0;
+    }
+    to {
+        transform: rotate(0deg) scale(1);
+        opacity: 1;
+    }
 }
 
 /* Painel de Controles */
@@ -109,13 +146,16 @@ body {
     display: flex;
     flex-direction: column;
     gap: 20px;
-    width: 350px;
+    width: 100%; /* Ocupa 100% da largura em telas menores */
+    max-width: 500px;
     padding: 30px;
     border-radius: 20px;
     background-color: rgba(0, 0, 0, 0.2);
     border: 1px solid rgba(255, 255, 255, 0.2);
     backdrop-filter: blur(5px);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    overflow-y: auto; /* Permite scroll se o conteúdo for muito longo */
+    max-height: 80vh;
 }
 
 .control-section {
@@ -126,13 +166,20 @@ body {
     font-size: 1.5rem;
     font-weight: 600;
     margin-bottom: 10px;
-    color: #fdbb2d; /* Cor de destaque para os títulos */
+    color: #fdbb2d;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* Container de Botões (flex-wrap para quebra de linha) */
+.options-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
 }
 
 /* Estilo dos Botões de Controle */
 .control-button {
-    /* Base dos botões com transparência e bordas */
     background-color: rgba(255, 255, 255, 0.15);
     border: 2px solid rgba(255, 255, 255, 0.6);
     color: white;
@@ -144,6 +191,8 @@ body {
     cursor: pointer;
     border-radius: 10px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    min-width: 60px; /* Adicionado para botões como "Óculos" */
+    height: 60px;
 }
 
 .control-button:hover {
@@ -152,11 +201,34 @@ body {
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
 }
 
-/* Estado do botão ativo */
 .active-button {
     background-color: rgba(255, 255, 255, 0.5);
-    /* Sombra com brilho para indicar o estado ativo */
     box-shadow: 0 0 20px #80DEEA;
     border-color: #80DEEA;
-    transform: scale(1.1); /* Efeito de escala no botão ativo */
+    transform: scale(1.1);
+}
+
+/* Animações adicionais */
+.animate-fade-in {
+    animation: fade-in 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-wiggle {
+    animation: wiggle 1s ease-in-out infinite;
+}
+
+@keyframes wiggle {
+    0%, 100% { transform: rotate(-3deg); }
+    50% { transform: rotate(3deg); }
 }

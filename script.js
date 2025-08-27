@@ -1,137 +1,150 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // --- Referências aos Elementos do DOM ---
     const playButton = document.getElementById('play-button');
     const gameStart = document.getElementById('game-start');
     const gameContent = document.getElementById('game-content');
-    const characterContainer = document.querySelector('.character-container');
+    const downloadButton = document.getElementById('download-button');
 
-    // Função para iniciar o jogo
-    const startGame = () => {
-        gameStart.classList.add('hidden'); // Oculta a tela de início
-        gameContent.classList.remove('hidden'); // Mostra a tela de personalização
-        gameContent.classList.add('flex-col', 'lg:flex-row'); // Adiciona as classes de layout
+    const characterParts = {
+        body: document.getElementById('body-base'),
+        pants: document.getElementById('pants'),
+        shirt: document.getElementById('shirt'),
+        eyes: document.getElementById('eyes'),
+        hair: document.getElementById('hair'),
+        glasses: document.getElementById('glasses')
     };
+
+    const partContainers = {
+        skin: document.getElementById('skin-style-options'),
+        eyesStyle: document.getElementById('eye-style-options'),
+        eyeColor: document.getElementById('eye-color-options'),
+        hair: document.getElementById('hair-style-options'),
+        shirt: document.getElementById('shirt-style-options'),
+        pants: document.getElementById('pants-style-options'),
+        accessory: document.getElementById('accessory-options')
+    };
+
+    // --- Funções de Animação e Utilitário ---
+
+    /**
+     * Adiciona e remove a classe de animação 'rotate-in' para uma parte do personagem.
+     * @param {HTMLElement} partElement - O elemento de imagem a ser animado.
+     */
+    function triggerAnimation(partElement) {
+        if (partElement) {
+            partElement.classList.add('rotate-in');
+            setTimeout(() => {
+                partElement.classList.remove('rotate-in');
+            }, 500); // 500ms corresponde à duração da animação no CSS
+        }
+    }
+
+    /**
+     * Define o botão como 'ativo' em um container, removendo a classe dos outros.
+     * @param {HTMLElement} container - O container de botões.
+     * @param {HTMLElement} button - O botão clicado.
+     */
+    function setActiveButton(container, button) {
+        container.querySelectorAll('.control-button').forEach(btn => btn.classList.remove('active-button'));
+        button.classList.add('active-button');
+    }
+
+    // --- Lógica de Início do Jogo ---
 
     // Adiciona o evento de clique ao botão JOGAR
     if (playButton) {
-        playButton.addEventListener('click', startGame);
+        playButton.addEventListener('click', () => {
+            gameStart.classList.add('opacity-0', 'pointer-events-none');
+            setTimeout(() => {
+                gameStart.classList.add('hidden');
+                gameContent.classList.remove('hidden');
+                gameContent.classList.add('opacity-100', 'flex', 'lg:flex-row', 'flex-col');
+                // Adiciona uma pequena animação de entrada para todas as partes ao iniciar
+                Object.values(characterParts).forEach(part => triggerAnimation(part));
+            }, 700);
+        });
     }
-});
 
+    // --- Lógica de Personalização do Personagem ---
 
+    // Event listener consolidado para todas as seções de estilo (exceto pele e acessórios)
+    Object.values(partContainers).forEach(container => {
+        container.addEventListener('click', (event) => {
+            const button = event.target.closest('button');
+            if (!button) return;
 
+            const part = button.getAttribute('data-part');
+            const style = button.getAttribute('data-style');
 
-// Get the character image parts
-const bodyBase = document.getElementById('body-base');
-const pants = document.getElementById('pants');
-const shirt = document.getElementById('shirt');
-const hair = document.getElementById('hair');
-const glasses = document.getElementById('glasses');
+            if (part && style) {
+                setActiveButton(container, button);
+                const partElement = characterParts[part];
+                if (partElement) {
+                    partElement.src = `images/${style}.png`;
+                    triggerAnimation(partElement);
+                }
+            }
+        });
+    });
 
-// Get the option containers
-const skinStyleOptions = document.getElementById('skin-style-options');
-const pantsStyleOptions = document.getElementById('pants-style-options');
-const shirtStyleOptions = document.getElementById('shirt-style-options');
-const hairStyleOptions = document.getElementById('hair-style-options');
-const accessoryOptions = document.getElementById('accessory-options');
-
-// Helper function to update character parts and active buttons
-function updateCharacter(part, newSrc) {
-    part.src = `images/${newSrc}.png`;
-}
-
-// Function to handle button clicks for a specific section
-function handleOptionClick(container, part) {
-    container.addEventListener('click', (event) => {
-        const clickedButton = event.target.closest('button');
-        if (clickedButton) {
-            container.querySelectorAll('.control-button').forEach(btn => btn.classList.remove('active-button'));
-            clickedButton.classList.add('active-button');
-            const newStyle = clickedButton.getAttribute('data-style');
-            if (newStyle) {
-                updateCharacter(part, newStyle);
+    // Lógica para a cor da pele (caminho diferente)
+    partContainers.skin.addEventListener('click', (event) => {
+        const button = event.target.closest('button');
+        if (button) {
+            setActiveButton(partContainers.skin, button);
+            const newSrc = button.getAttribute('data-style');
+            if (newSrc) {
+                characterParts.body.src = newSrc;
+                triggerAnimation(characterParts.body);
             }
         }
     });
-}
 
-// Event listeners for different sections
-handleOptionClick(pantsStyleOptions, pants);
-handleOptionClick(shirtStyleOptions, shirt);
-handleOptionClick(hairStyleOptions, hair);
-
-// Special case for skin color because it uses different file paths
-skinStyleOptions.addEventListener('click', (event) => {
-    const clickedButton = event.target.closest('button');
-    if (clickedButton) {
-        skinStyleOptions.querySelectorAll('.control-button').forEach(btn => btn.classList.remove('active-button'));
-        clickedButton.classList.add('active-button');
-        const newSrc = clickedButton.getAttribute('data-style');
-        if (newSrc) {
-            bodyBase.src = newSrc;
+    // Lógica para a cor dos olhos (usa filtro CSS)
+    partContainers.eyeColor.addEventListener('click', (event) => {
+        const button = event.target.closest('button');
+        if (button) {
+            setActiveButton(partContainers.eyeColor, button);
+            const newColor = button.getAttribute('data-color');
+            if (newColor) {
+                // Aplica a cor do drop-shadow para dar o efeito de cor
+                characterParts.eyes.style.filter = `drop-shadow(0 0 0.75rem ${newColor})`;
+            }
         }
-    }
-});
-
-// Accessory toggle
-accessoryOptions.addEventListener('click', (event) => {
-    const clickedButton = event.target.closest('button');
-    if (clickedButton) {
-        const accessoryId = clickedButton.getAttribute('data-accessory');
-        const accessoryPart = document.getElementById(accessoryId);
-        if (accessoryPart) {
-            accessoryPart.classList.toggle('hidden');
-            clickedButton.classList.toggle('active-button');
+    });
+    
+    // Lógica para acessórios (toggle)
+    partContainers.accessory.addEventListener('click', (event) => {
+        const button = event.target.closest('button');
+        if (button) {
+            const accessoryId = button.getAttribute('data-accessory');
+            const accessoryPart = characterParts[accessoryId];
+            if (accessoryPart) {
+                accessoryPart.classList.toggle('hidden');
+                button.classList.toggle('active-button');
+                triggerAnimation(accessoryPart);
+            }
         }
-    }
-});
+    });
 
+    // --- Lógica de Download ---
 
+    // Você precisa incluir a biblioteca html2canvas no seu HTML para esta função funcionar.
+    // <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    if (downloadButton) {
+        downloadButton.addEventListener('click', () => {
+            // Seleciona o container do personagem para capturar
+            const containerToCapture = document.querySelector('.character-container');
 
-// Adicione esta parte ao seu script.js
-// Lógica para mudar o estilo (a imagem) dos olhos
-const eyeStyleOptions = document.getElementById('eye-style-options');
-const eyesImg = document.getElementById('eyes');
-
-eyeStyleOptions.addEventListener('click', (event) => {
-    const target = event.target.closest('button');
-    if (target) {
-        // Remover a classe ativa de todos os botões de estilo de olho
-        document.querySelectorAll('#eye-style-options button').forEach(btn => {
-            btn.classList.remove('active-button');
+            html2canvas(containerToCapture, {
+                backgroundColor: null, // Deixa o fundo transparente
+                scale: 2 // Aumenta a resolução da imagem para melhor qualidade
+            }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'meu-personagem-fofo.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            });
         });
-
-        // Adicionar a classe ativa ao botão clicado
-        target.classList.add('active-button');
-        
-        // Mudar a imagem dos olhos
-        const newStyle = target.getAttribute('data-style');
-        eyesImg.src = `images/${newStyle}.png`;
-    }
-});
-
-// Lógica para mudar a cor dos olhos
-const eyeColorOptions = document.getElementById('eye-color-options');
-
-eyeColorOptions.addEventListener('click', (event) => {
-    const target = event.target.closest('button');
-    if (target) {
-        // Remover a classe ativa de todos os botões de cor de olho
-        document.querySelectorAll('#eye-color-options button').forEach(btn => {
-            btn.classList.remove('active-button');
-        });
-
-        // Adicionar a classe ativa ao botão clicado
-        target.classList.add('active-button');
-        
-        // Obter a cor do atributo data-color
-        const newColor = target.getAttribute('data-color');
-        
-        // Aplicar a cor usando um filtro CSS
-        // O `filter: hue-rotate(...)` é a forma mais eficaz de mudar a cor de uma imagem PNG
-        // sem precisar ter várias imagens coloridas.
-        // No entanto, para cores específicas, o melhor é ter a imagem já colorida.
-        // Para simplificar, o ideal seria ter imagens separadas para cada cor,
-        // mas se for usar a mesma imagem para diferentes cores de olhos, o CSS filter é uma opção.
-        eyesImg.style.filter = `drop-shadow(0 0 0.75rem ${newColor})`;
     }
 });
