@@ -25,8 +25,8 @@ document.addEventListener('DOMContentLoaded', () => {
         // Novas referências para os contêineres de cor específicos
         eyeColors: {
             'olho1-1': document.getElementById('eye-colors-olho1-1'),
-            'eyes_2': document.getElementById('eye-colors-eyes_2'),
-            'eyes_3': document.getElementById('eye-colors-eyes_3')
+            'olho2_1': document.getElementById('eye-colors-eyes_2'),
+            'olho3_1': document.getElementById('eye-colors-eyes_3')
         }
     };
 
@@ -200,7 +200,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 scale: 2
             }).then(canvas => {
                 const link = document.createElement('a');
-                link.download = 'meu-personagem-fofo.png';
+                link.download = 'meu-personagem.png';
                 link.href = canvas.toDataURL('image/png');
                 link.click();
             });
