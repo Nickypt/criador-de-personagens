@@ -207,3 +207,106 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
+
+
+
+
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    // ... (restante do seu código, não altere nada aqui)
+
+    const characterParts = {
+        body: document.getElementById('body-base'),
+        pants: document.getElementById('pants'),
+        shirt: document.getElementById('shirt'),
+        eyes: document.getElementById('eyes'),
+        hair: document.getElementById('hair'),
+        glasses: document.getElementById('glasses')
+    };
+
+    const partContainers = {
+        skin: document.getElementById('skin-style-options'),
+        eyesStyle: document.getElementById('eye-style-options'),
+        eyeColor: document.getElementById('eye-color-options'),
+        hair: document.getElementById('hair-style-options'),
+        shirt: document.getElementById('shirt-style-options'),
+        pants: document.getElementById('pants-style-options'),
+        accessory: document.getElementById('accessory-options'),
+        eyeColors: {
+            'olho1-1': document.getElementById('eye-colors-olho1-1'),
+            'eyes_2': document.getElementById('eye-colors-eyes_2'),
+            'eyes_3': document.getElementById('eye-colors-eyes_3')
+        }
+    };
+    
+    // ... (Funções de animação e lógica de início, não altere nada aqui)
+
+    // ... (Lógica de personalização do personagem para skin, cabelo, etc.)
+
+    // --- Nova Lógica para Estilo e Cor dos Olhos ---
+
+    // Listener para os botões de estilo dos olhos
+    partContainers.eyesStyle.addEventListener('click', (event) => {
+        const button = event.target.closest('button');
+        if (button) {
+            const selectedStyle = button.getAttribute('data-style');
+            setActiveButton(partContainers.eyesStyle, button);
+
+            // Esconde todos os contêineres de cor
+            Object.values(partContainers.eyeColors).forEach(container => {
+                if (container) {
+                    container.classList.add('hidden');
+                }
+            });
+
+            // Mostra o contêiner de cor correspondente ao estilo selecionado
+            const targetContainer = partContainers.eyeColors[selectedStyle];
+            if (targetContainer) {
+                targetContainer.classList.remove('hidden');
+                // Pega a primeira cor do novo contêiner e a aplica
+                const firstColorButton = targetContainer.querySelector('.control-button');
+                if (firstColorButton) {
+                    firstColorButton.click(); // Simula o clique para aplicar a cor
+                }
+            }
+        }
+    });
+
+    // Listener para os botões de cor dos olhos, agora dentro de cada contêiner
+    document.querySelectorAll('.eye-color-options-container').forEach(container => {
+        container.addEventListener('click', (event) => {
+            const button = event.target.closest('button');
+            if (button) {
+                setActiveButton(container, button);
+                const newColor = button.getAttribute('data-color');
+                const eyesElement = characterParts.eyes;
+
+                // Pega o estilo de olho ativo
+                const currentStyleButton = document.querySelector('#eye-style-options .active-button');
+                const currentStyle = currentStyleButton.getAttribute('data-style');
+
+                if (newColor && currentStyle) {
+                    // Mapeia a cor hexadecimal para um nome de arquivo (ex: #4e8cff para 'azul')
+                    const colorMap = {
+                        '#4e8cff': 'azul',
+                        '#1c4e18': 'verde',
+                        '#c16a24': 'marrom',
+                        '#9d9d9d': 'cinza',
+                        '#000000': 'preto'
+                    };
+                    const colorName = colorMap[newColor];
+
+                    if (colorName) {
+                        eyesElement.src = `images/${currentStyle}_${colorName}.png`;
+                        triggerAnimation(eyesElement);
+                    }
+                }
+            }
+        });
+    });
+
+    // ... (Lógica para acessórios e download, não altere nada aqui)
+
+});
