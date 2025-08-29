@@ -21,7 +21,13 @@ document.addEventListener('DOMContentLoaded', () => {
         hair: document.getElementById('hair-style-options'),
         shirt: document.getElementById('shirt-style-options'),
         pants: document.getElementById('pants-style-options'),
-        accessory: document.getElementById('accessory-options')
+        accessory: document.getElementById('accessory-options'),
+        // Novas referências para os contêineres de cor específicos
+        eyeColors: {
+            'olho1-1': document.getElementById('eye-colors-olho1-1'),
+            'eyes_2': document.getElementById('eye-colors-eyes_2'),
+            'eyes_3': document.getElementById('eye-colors-eyes_3')
+        }
     };
 
     // --- Funções de Animação e Utilitário ---
@@ -67,26 +73,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Lógica de Personalização do Personagem ---
 
-    // Event listener consolidado para todas as seções de estilo (exceto pele e acessórios)
-    Object.values(partContainers).forEach(container => {
-        container.addEventListener('click', (event) => {
-            const button = event.target.closest('button');
-            if (!button) return;
-
-            const part = button.getAttribute('data-part');
-            const style = button.getAttribute('data-style');
-
-            if (part && style) {
-                setActiveButton(container, button);
-                const partElement = characterParts[part];
-                if (partElement) {
-                    partElement.src = `images/${style}.png`;
-                    triggerAnimation(partElement);
-                }
-            }
-        });
-    });
-
     // Lógica para a cor da pele (caminho diferente)
     partContainers.skin.addEventListener('click', (event) => {
         const button = event.target.closest('button');
@@ -100,20 +86,95 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Lógica para a cor dos olhos (usa filtro CSS)
-    partContainers.eyeColor.addEventListener('click', (event) => {
+    // Event listener consolidado para todas as seções de estilo (exceto pele e acessórios)
+    // Este listener agora precisa lidar com a lógica de estilo e cor dos olhos
+    Object.values(partContainers).forEach(container => {
+        if (container.id !== 'skin-style-options' && container.id !== 'accessory-options' && container.id !== 'eye-color-options') {
+            container.addEventListener('click', (event) => {
+                const button = event.target.closest('button');
+                if (!button) return;
+    
+                const part = button.getAttribute('data-part');
+                const style = button.getAttribute('data-style');
+    
+                if (part && style) {
+                    setActiveButton(container, button);
+                    const partElement = characterParts[part];
+                    if (partElement) {
+                        partElement.src = `images/${style}.png`;
+                        triggerAnimation(partElement);
+                    }
+                }
+            });
+        }
+    });
+
+    // --- Nova Lógica para Estilo e Cor dos Olhos ---
+
+    // Listener para os botões de estilo dos olhos
+    partContainers.eyesStyle.addEventListener('click', (event) => {
         const button = event.target.closest('button');
         if (button) {
-            setActiveButton(partContainers.eyeColor, button);
-            const newColor = button.getAttribute('data-color');
-            if (newColor) {
-                // Aplica a cor do drop-shadow para dar o efeito de cor
-                characterParts.eyes.style.filter = `drop-shadow(0 0 0.75rem ${newColor})`;
+            const selectedStyle = button.getAttribute('data-style');
+            setActiveButton(partContainers.eyesStyle, button);
+
+            // Esconde todos os contêineres de cor
+            Object.values(partContainers.eyeColors).forEach(container => {
+                if (container) {
+                    container.classList.add('hidden');
+                }
+            });
+
+            // Mostra o contêiner de cor correspondente ao estilo selecionado
+            const targetContainer = partContainers.eyeColors[selectedStyle];
+            if (targetContainer) {
+                targetContainer.classList.remove('hidden');
+                // Pega a primeira cor do novo contêiner e a aplica
+                const firstColorButton = targetContainer.querySelector('.control-button');
+                if (firstColorButton) {
+                    firstColorButton.click(); // Simula o clique para aplicar a cor
+                }
+            }
+
+            // Mudar a imagem do olho de acordo com o estilo
+            const eyesElement = characterParts.eyes;
+            if (eyesElement) {
+                eyesElement.src = `images/${selectedStyle}.png`;
+                triggerAnimation(eyesElement);
             }
         }
     });
     
-    // Lógica para acessórios (toggle)
+    // Listener para os botões de cor dos olhos, agora dentro de cada contêiner
+    document.querySelectorAll('.eye-color-options-container').forEach(container => {
+        container.addEventListener('click', (event) => {
+            const button = event.target.closest('button');
+            if (button) {
+                setActiveButton(container, button);
+                const newColor = button.getAttribute('data-color');
+                const eyesElement = characterParts.eyes;
+
+                // Agora, a lógica de cor não muda a imagem, mas aplica a cor ao SVG ou PNG
+                // Você precisa de uma maneira de aplicar a cor à imagem. O ideal é usar SVGs ou um
+                // sistema de camadas para que as cores funcionem. Para PNGs, a abordagem de drop-shadow
+                // era a mais simples. Se o desejo é pintar os olhos dentro da imagem, isso requer
+                // um método diferente (e.g., usar SVGs ou ter imagens separadas para cada cor).
+                // A abordagem mais robusta seria ter imagens de olhos diferentes para cada cor.
+                // Exemplo: `images/olho1-1_azul.png`, `images/olho1-1_verde.png`.
+                // Como não tenho a estrutura exata das suas imagens, vou manter a lógica de troca
+                // de fonte (src) para um exemplo simplificado:
+                
+                // Exemplo de como funcionaria se você tivesse imagens separadas por estilo e cor
+                const currentStyle = document.querySelector('#eye-style-options .active-button').getAttribute('data-style');
+                // O `newColor` deve ser um nome de arquivo (e.g., "azul", "vermelho")
+                const colorFileName = newColor.replace('#', '');
+                eyesElement.src = `images/${currentStyle}_color_${colorFileName}.png`;
+                triggerAnimation(eyesElement);
+            }
+        });
+    });
+
+    // --- Lógica para acessórios (toggle) ---
     partContainers.accessory.addEventListener('click', (event) => {
         const button = event.target.closest('button');
         if (button) {
@@ -127,18 +188,16 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+
     // --- Lógica de Download ---
 
-    // Você precisa incluir a biblioteca html2canvas no seu HTML para esta função funcionar.
-    // <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     if (downloadButton) {
         downloadButton.addEventListener('click', () => {
-            // Seleciona o container do personagem para capturar
             const containerToCapture = document.querySelector('.character-container');
 
             html2canvas(containerToCapture, {
-                backgroundColor: null, // Deixa o fundo transparente
-                scale: 2 // Aumenta a resolução da imagem para melhor qualidade
+                backgroundColor: null,
+                scale: 2
             }).then(canvas => {
                 const link = document.createElement('a');
                 link.download = 'meu-personagem-fofo.png';
