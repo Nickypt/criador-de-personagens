@@ -1,13 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
 
 :root {
-    --bg-color: #f0f2f5;
-    --card-bg: #ffffff;
-    --primary-color: #4a4a4a;
-    --accent-color: #1a73e8;
+    --bg-color: #1a1a2e;
+    --card-bg: #22253a;
+    --primary-color: #e6e6e6;
+    --accent-color: #e94560;
     --danger-color: #ea4335;
-    --success-color: #34a853;
-    --shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    --success-color: #34d399;
+    --secondary-color: #4a4a60;
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     --border-radius: 16px;
 }
 
@@ -15,57 +16,86 @@ body {
     font-family: 'Poppins', sans-serif;
     background-color: var(--bg-color);
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
     margin: 0;
     color: var(--primary-color);
     text-align: center;
-    padding: 2em;
-    box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
 }
 
-.header {
-    margin-bottom: 2em;
+.background-decorations .decoration-icon {
+    position: absolute;
+    font-size: 8em;
+    color: rgba(255, 255, 255, 0.05);
+    z-index: -1;
+    animation: rotate-animation 20s infinite linear;
 }
 
-h1 {
-    font-size: 2.8em;
-    font-weight: 700;
-    color: var(--primary-color);
-    margin: 0;
+.decoration-icon.top-left { top: 10%; left: 10%; }
+.decoration-icon.top-right { top: 10%; right: 10%; }
+.decoration-icon.bottom-left { bottom: 10%; left: 10%; }
+.decoration-icon.bottom-right { bottom: 10%; right: 10%; }
+
+@keyframes rotate-animation {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
 }
 
-p {
-    font-size: 1.1em;
-    margin: 0.5em 0;
-    opacity: 0.8;
+.main-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 2em;
+    width: 90%;
+    max-width: 1200px;
+    position: relative;
 }
 
-.jogo-container {
+.score-sidebar {
+    position: sticky;
+    top: 2em;
+    padding: 1.5em;
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    width: 250px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5em;
+    align-items: flex-start;
+}
+
+.score-item {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+    font-size: 1.2em;
+    font-weight: 600;
+}
+
+.score-item i {
+    color: var(--accent-color);
+    font-size: 1.5em;
+}
+
+.game-container {
     background-color: var(--card-bg);
     padding: 3em 2.5em;
     border-radius: var(--border-radius);
     box-shadow: var(--shadow);
+    flex-grow: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100%;
-    max-width: 600px;
-    box-sizing: border-box;
     gap: 1.5em;
+    max-width: 600px;
 }
 
-.score-container {
-    display: flex;
-    justify-content: space-around;
-    width: 100%;
-    font-weight: 600;
-    font-size: 1.2em;
-    padding: 1em 0;
-    border-bottom: 1px solid #e0e0e0;
-}
+h1 { font-size: 2.2em; font-weight: 700; margin: 0; }
+.game-header p { margin: 0.5em 0 1.5em; opacity: 0.7; }
 
 #dica-container {
     height: 250px;
@@ -86,7 +116,7 @@ p {
     max-width: 100%;
     max-height: 200px;
     border-radius: var(--border-radius);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .controls {
@@ -108,17 +138,15 @@ input, button {
 }
 
 input {
-    background-color: #f0f2f5;
+    background-color: var(--secondary-color);
     color: var(--primary-color);
     flex-grow: 1;
     text-align: center;
     min-width: 150px;
 }
 
-input:focus {
-    outline: none;
-    box-shadow: 0 0 0 3px var(--accent-color);
-}
+input::placeholder { color: rgba(255, 255, 255, 0.5); }
+input:focus { outline: none; box-shadow: 0 0 0 3px var(--accent-color); }
 
 button {
     background-color: var(--accent-color);
@@ -126,33 +154,17 @@ button {
     font-weight: 600;
 }
 
-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-}
+button:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4); }
 
-#pedirDicaBtn {
-    background-color: #ff9800;
-}
-
-#reiniciarBtn {
-    margin-top: 1em;
-    background-color: var(--success-color);
-    font-weight: 600;
-    width: 100%;
-}
+#pedirDicaBtn { background-color: #ff9800; }
+#reiniciarBtn { margin-top: 1em; background-color: var(--success-color); width: 100%; }
 
 #mensagem {
     font-weight: 700;
     font-size: 1.2em;
-    margin: 1em 0;
     min-height: 2em;
+    margin-top: 1em;
 }
 
-.win-message {
-    color: var(--success-color);
-}
-
-.lose-message {
-    color: var(--danger-color);
-}
+.win-message { color: var(--success-color); }
+.lose-message { color: var(--danger-color); }

@@ -6,31 +6,47 @@
     <title>Adivinhe o Personagem</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <div class="header">
-        <h1>Adivinhe o Personagem</h1>
-        <p>Um jogo de adivinhação com dicas e pontuação.</p>
+    <div class="background-decorations">
+        <i class="fas fa-question-circle decoration-icon top-left"></i>
+        <i class="fas fa-question-circle decoration-icon bottom-right"></i>
+        <i class="fas fa-question-circle decoration-icon top-right"></i>
+        <i class="fas fa-question-circle decoration-icon bottom-left"></i>
     </div>
     
-    <div class="jogo-container">
-        <div class="score-container">
-            <p id="pontuacao">Pontos: 0</p>
-            <p id="meta">Meta: 30</p>
-        </div>
+    <div class="main-container">
+        <aside class="score-sidebar">
+            <div class="score-item">
+                <i class="fas fa-trophy"></i>
+                <p id="pontuacao">Pontos: 0</p>
+            </div>
+            <div class="score-item">
+                <i class="fas fa-star"></i>
+                <p id="meta">Meta: 30</p>
+            </div>
+        </aside>
         
-        <div id="dica-container">
-            <div id="dica"></div>
-        </div>
-        
-        <div class="controls">
-            <button id="pedirDicaBtn">Pedir Dica</button>
-            <input type="text" id="adivinhaInput" placeholder="Digite seu palpite">
-            <button id="enviarPalpiteBtn">Adivinhar</button>
-        </div>
-        
-        <p id="mensagem"></p>
-        <button id="reiniciarBtn" class="reiniciar-btn" style="display: none;">Reiniciar Jogo</button>
+        <main class="game-container">
+            <header class="game-header">
+                <h1>Adivinhe o Personagem</h1>
+                <p>Descubra quem é a figura misteriosa!</p>
+            </header>
+            
+            <div id="dica-container">
+                <div id="dica"></div>
+            </div>
+            
+            <div class="controls">
+                <button id="pedirDicaBtn">Pedir Dica</button>
+                <input type="text" id="adivinhaInput" placeholder="Digite seu palpite...">
+                <button id="enviarPalpiteBtn">Adivinhar</button>
+            </div>
+            
+            <p id="mensagem"></p>
+            <button id="reiniciarBtn" style="display: none;">Reiniciar Jogo</button>
+        </main>
     </div>
 
     <script src="script.js"></script>
