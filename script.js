@@ -3,16 +3,16 @@ const personagens = [
     {
         nome: "Harry Potter",
         dicas: [
-            "Ele é um bruxo que sobreviveu à maldição de Voldemort quando era um bebê.",
+            "É um bruxo que sobreviveu à maldição de Voldemort quando era um bebê.",
             "Ele tem uma cicatriz na testa em forma de raio."
         ],
-        imagemUrl: "https://eskipaper.com/images/harry-potter-4.jpg"
+        imagemUrl: "https://eskipaper.com/images/harry-potter-4.jpg "
     },
     {
         nome: "Goku",
         dicas: [
-            "É um dos Saiyajins sobreviventes, um guerreiro do Planeta Vegeta.",
-            "Sua principal técnica é o Kamehameha, e ele pode se transformar em Super Saiyajin."
+            "É um dos últimos Saiyajins, um guerreiro do Planeta Vegeta.",
+            "Sua técnica principal é o Kamehameha, e ele pode se transformar em Super Saiyajin."
         ],
         imagemUrl: "https://www.cartonionline.com/wordpress/wp-content/uploads/2023/02/goku.jpg "
     },
@@ -22,26 +22,108 @@ const personagens = [
             "Ele é um bilionário que combate o crime em Gotham City.",
             "Não tem superpoderes, mas usa tecnologia e gadgets avançados."
         ],
-        imagemUrl: "https://th.bing.com/th/id/R.14a6e7539954b258f79b7500546a91f5?rik=BZnN2ZooGHAR9Q&pid=ImgRaw&r=0 "
+        imagemUrl: "https://terraverso.com.br/wp-content/uploads/2019/10/batman.jpg "
     },
     {
         nome: "Sherlock Holmes",
         dicas: [
-            "Ele é um detetive particular britânico, conhecido por sua grande inteligência e observação.",
-            "Ele vive na Rua Baker, 221B, em Londres, e é acompanhado por seu amigo Dr. Watson."
+            "É um detetive particular britânico, conhecido por sua grande inteligência e observação.",
+            "Vive na Rua Baker, 221B, em Londres, e é acompanhado por seu amigo Dr. Watson."
         ],
-        imagemUrl: "https://th.bing.com/th/id/R.43dd37e2d89d938c4edbe619915bffe3?rik=KirWNrYa7EKviQ&riu=http%3a%2f%2fimages6.fanpop.com%2fimage%2fphotos%2f39000000%2fSherlock-Holmes-Promo-and-BTS-Pics-sherlock-holmes-sherlock-bbc1-39076124-2856-4284.jpg&ehk=4PZ94QuABEheyjhWqP9VAk0Cu7QNhMpzvsv7xZ2WR2M%3d&risl=&pid=ImgRaw&r=0 "
+        imagemUrl: " "
     },
     {
         nome: "Gandalf",
         dicas: [
             "Ele é um mago poderoso, membro da Ordem de Istari.",
-            "Ele guiasse os hobbits, anões e humanos em uma missão para derrotar um grande mal."
+            "Guia os hobbits, anões e humanos em uma missão para derrotar um grande mal."
         ],
-        imagemUrl: "https://th.bing.com/th/id/R.1de9fd651c8456e9f331519c24251a96?rik=IrS1Mgz4s4uDxA&riu=http%3a%2f%2fimages.wikia.com%2flotr%2fimages%2f8%2f8d%2fGandalf-2.jpg&ehk=Nm3tJ5SK6z6MbERxfYI6yqcd3virc6P6FuI9Uv1fxxw%3d&risl=&pid=ImgRaw&r=0 "
-
- }
+        imagemUrl: " "
+    },
+    {
+        nome: "Mulher Maravilha",
+        dicas: [
+            "Ela é uma princesa guerreira de Themyscira, uma ilha oculta.",
+            "Seu principal acessório é o Laço da Verdade, que força as pessoas a dizerem a verdade."
+        ],
+        imagemUrl: " "
+    },
+    {
+        nome: "Homem de Ferro",
+        dicas: [
+            "Ele é um inventor e bilionário excêntrico.",
+            "Usa uma armadura de alta tecnologia para combater o crime e salvar o mundo."
+        ],
+        imagemUrl: " "
+    },
+    {
+        nome: "Darth Vader",
+        dicas: [
+            "É um dos vilões mais icônicos do cinema, com uma respiração pesada e robótica.",
+            "Ele é um Lorde Sith, conhecido por ser o principal executor do Império Galáctico."
+        ],
+        imagemUrl: " "
+    },
+    {
+        nome: "Super-Homem",
+        dicas: [
+            "Ele é um alienígena do planeta Krypton, enviado à Terra ainda bebê.",
+            "Seus poderes incluem superforça, voo e visão de raio-x."
+        ],
+        imagemUrl: " "
+    },
+    {
+        nome: "Capitão América",
+        dicas: [
+            "Ele é um super-soldado da Segunda Guerra Mundial, que foi congelado no tempo.",
+            "Seu principal acessório é um escudo indestrutível feito de vibranium."
+        ],
+        imagemUrl: " "
+    },
+    {
+        nome: "Hulk",
+        dicas: [
+            "É um cientista que, após um experimento, se transforma em uma criatura gigante e verde quando fica irritado.",
+            "Sua força é proporcional à sua raiva."
+        ],
+        imagemUrl: "https://i.imgur.com/d9T3c0D.png"
+    },
+    {
+        nome: "Capitão Jack Sparrow",
+        dicas: [
+            "Ele é um pirata carismático, com um jeito de andar e falar únicos.",
+            "Capitão do navio Pérola Negra, ele está sempre procurando tesouros e evitando a Companhia das Índias Orientais."
+        ],
+        imagemUrl: "https://i.imgur.com/j6s5Bqg.png"
+    },
+    {
+        nome: "Peter Pan",
+        dicas: [
+            "Ele é um menino que se recusa a crescer e mora em uma ilha mágica.",
+            "Voa com a ajuda de pó de fada e é amigo de uma pequena fada chamada Sininho."
+        ],
+        imagemUrl: "https://i.imgur.com/A83cQ1H.png"
+    },
+    {
+        nome: "Frodo Bolseiro",
+        dicas: [
+            "Ele é um hobbit, uma criatura pequena que vive em um lugar chamado o Condado.",
+            "Sua missão é destruir um anel mágico e poderoso em uma montanha de fogo."
+        ],
+        imagemUrl: "https://i.imgur.com/uGzC1Nn.png"
+    },
+    {
+        nome: "Homem-Aranha",
+        dicas: [
+            "Ele é um jovem fotógrafo que foi picado por um aracnídeo radioativo.",
+            "Seus poderes incluem teias que ele atira dos pulsos e um 'sentido aranha' que o alerta sobre perigos."
+        ],
+        imagemUrl: "https://i.imgur.com/i9Tj63c.png"
+    }
 ];
+
+// O restante do seu código JavaScript continua o mesmo, sem alterações.
+// ... (código JavaScript da versão anterior)
 
 let personagemSecreto = {};
 let tentativas = 0;
