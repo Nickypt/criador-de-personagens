@@ -1,2 +1,2 @@
-# criador-de-personagens
-jogo que cria personagens
+# adivinhe-o-personagens
+jogo de adivinhação de personagens

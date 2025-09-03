@@ -1,234 +1,115 @@
-/* Estilos Gerais do Jogo e Animações de Fundo */
-body {
-    font-family: 'Inter', sans-serif;
-    background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
-    color: #E0F2F1;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0;
-    overflow: hidden;
-    transition: background 1s ease-in-out;
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&display=swap');
+
+:root {
+    --cor-fundo: #f4f7f6;
+    --cor-principal: #5e64ff;
+    --cor-secundaria: #ff6b6b;
+    --cor-terciaria: #ffe66d;
+    --cor-texto: #333;
+    --sombra: 0 4px 12px rgba(0, 0, 0, 0.1);
+    --borda-arredondada: 12px;
 }
 
-/* ----------------------------------- */
-/* Seção Inicial do Jogo (Tela de Abertura) */
-/* ----------------------------------- */
-
-.game-start {
+body {
+    font-family: 'Quicksand', sans-serif;
+    background-color: var(--cor-fundo);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.85);
-    backdrop-filter: blur(12px);
-    z-index: 100;
-    transition: opacity 1s ease-in-out;
+    height: 100vh;
+    margin: 0;
+    color: var(--cor-texto);
     text-align: center;
 }
 
-.start-button {
-    padding: 18px 50px;
-    font-family: 'Inter', sans-serif;
-    font-size: 26px;
-    font-weight: bold;
-    color: white;
-    background-image: linear-gradient(45deg, #FF6B6B, #F06595);
-    border: none;
-    border-radius: 50px;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
-    cursor: pointer;
-    transition: transform 0.3s, box-shadow 0.3s;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    position: relative;
-    animation: pulse 2s infinite;
+h1 {
+    font-size: 2.5em;
+    font-weight: 700;
+    color: var(--cor-principal);
+    text-shadow: 2px 2px var(--cor-secundaria);
 }
 
-.start-button:hover {
-    transform: translateY(-8px) scale(1.08);
-    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.5);
+p {
+    font-size: 1.1em;
+    margin-bottom: 2em;
 }
 
-@keyframes pulse {
-    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(240, 101, 149, 0.7); }
-    70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(240, 101, 149, 0); }
-    100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(240, 101, 149, 0); }
-}
-
-/* ----------------------------------- */
-/* Seção do Jogo Principal (Character Creator) */
-/* ----------------------------------- */
-
-/* Container Principal do Jogo com Flexbox para Layout Lado a Lado */
-.game-container {
+.jogo-container {
+    background-color: #fff;
+    padding: 3em 2.5em;
+    border-radius: var(--borda-arredondada);
+    box-shadow: var(--sombra);
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    gap: 40px;
+    align-items: center;
+    gap: 1em;
     width: 90%;
-    max-width: 1200px;
-    padding: 20px;
-}
-
-@media (min-width: 1024px) {
-    .game-container {
-        flex-direction: row; /* Layout lado a lado em telas maiores */
-        align-items: center;
-    }
-}
-
-/* Card de "Vidro Fosco" para o Personagem */
-.character-preview {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 30px;
-    border-radius: 20px;
-    background-color: rgba(255, 255, 255, 0.15);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(8px);
-    overflow: hidden;
-    transform: perspective(1000px) rotateY(10deg);
-    transition: transform 0.5s ease, background-color 0.3s;
-}
-
-.character-preview:hover {
-    transform: perspective(1000px) rotateY(0deg);
-}
-
-/* Container de Posição Relativa para as Partes do Personagem */
-.character-container {
-    position: relative;
-    width: 300px;
-    height: 450px;
-    aspect-ratio: 1 / 1.5; /* Mantém a proporção */
-}
-
-/* Animação para a transição das partes do personagem */
-.character-part {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
-    will-change: transform, opacity;
-}
-
-.rotate-in {
-    animation: rotateIn 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-}
-
-@keyframes rotateIn {
-    from {
-        transform: rotate(-10deg) scale(0.8);
-        opacity: 0;
-    }
-    to {
-        transform: rotate(0deg) scale(1);
-        opacity: 1;
-    }
-}
-
-/* Painel de Controles */
-.controls-panel {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    width: 100%; /* Ocupa 100% da largura em telas menores */
     max-width: 500px;
-    padding: 30px;
-    border-radius: 20px;
-    background-color: rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(5px);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-    overflow-y: auto; /* Permite scroll se o conteúdo for muito longo */
-    max-height: 80vh;
 }
 
-.control-section {
-    margin-bottom: 20px;
+input, button {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 1em;
+    padding: 0.8em 1.5em;
+    border-radius: 50px; /* Borda bem arredondada */
+    border: none;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.control-section h2 {
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin-bottom: 10px;
-    color: #b71fc5;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+input {
+    background-color: #f0f4f7;
+    color: var(--cor-texto);
+    text-align: center;
 }
 
-/* Container de Botões (flex-wrap para quebra de linha) */
-.options-group {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    justify-content: center;
+input:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--cor-principal);
 }
 
-/* Estilo dos Botões de Controle */
-.control-button {
-    background-color: rgba(255, 255, 255, 0.15);
-    border: 2px solid rgba(255, 255, 255, 0.6);
-    color: white;
-    font-weight: bold;
+button {
+    cursor: pointer;
+    font-weight: 700;
+    background-color: var(--cor-principal);
+    color: #fff;
+}
+
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--sombra);
+}
+
+#mensagem {
+    font-size: 1.2em;
+    font-weight: 700;
+    margin-top: 1em;
+    min-height: 2em;
+}
+
+#reiniciarBtn {
+    background-color: var(--cor-secundaria);
+}
+
+#reiniciarBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--sombra);
+}
+
+#dica {
+    min-height: 150px;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: transform 0.2s, background-color 0.2s, box-shadow 0.2s;
-    cursor: pointer;
-    border-radius: 10px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-    min-width: 60px; /* Adicionado para botões como "Óculos" */
-    height: 60px;
+    text-align: center;
+    font-size: 1em;
+    line-height: 1.5;
 }
 
-.control-button:hover {
-    transform: scale(1.1);
-    background-color: rgba(255, 255, 255, 0.3);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-}
-
-.active-button {
-    background-color: rgba(255, 255, 255, 0.5);
-    box-shadow: 0 0 20px #80DEEA;
-    border-color: #80DEEA;
-    transform: scale(1.1);
-}
-
-/* Animações adicionais */
-.animate-fade-in {
-    animation: fade-in 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
-}
-
-@keyframes fade-in {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.animate-wiggle {
-    animation: wiggle 1s ease-in-out infinite;
-}
-
-@keyframes wiggle {
-    0%, 100% { transform: rotate(-3deg); }
-    50% { transform: rotate(3deg); }
+#dica img {
+    max-width: 100%;
+    max-height: 200px;
+    border-radius: var(--borda-arredondada);
+    box-shadow: var(--sombra);
 }
