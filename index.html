@@ -11,12 +11,16 @@
     <p>Tente adivinhar o nome do personagem misterioso.</p>
     
     <div class="jogo-container">
+        <p id="pontuacao">Pontos: 0</p>
+        <p id="meta">Meta de pontos para vencer: 30</p>
+
         <div id="dica"></div>
         <button id="pedirDicaBtn">Pedir Dica</button>
         <input type="text" id="adivinhaInput" placeholder="Digite seu palpite">
         <button id="enviarPalpiteBtn">Adivinhar</button>
         <p id="mensagem"></p>
-        <button id="reiniciarBtn" style="display: none;">Reiniciar Jogo</button>
+        <button id="reiniciarBtn" style="display: none;">Próximo Personagem</button>
+        <button id="novoJogoBtn" style="display: none;">Reiniciar Jogo</button>
     </div>
 
     <script src="script.js"></script>

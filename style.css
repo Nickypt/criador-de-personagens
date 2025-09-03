@@ -124,3 +124,13 @@ button:hover {
     border-radius: var(--borda-arredondada);
     box-shadow: var(--sombra);
 }
+
+#pontuacao, #meta {
+    font-size: 1.2em;
+    font-weight: 700;
+    margin: 0.5em 0;
+}
+
+#novoJogoBtn {
+    background-color: #ff6b6b; /* Cor de Reiniciar */
+}

@@ -39,20 +39,26 @@ const personagens = [
             "Ele guiasse os hobbits, anões e humanos em uma missão para derrotar um grande mal."
         ],
         imagemUrl: "https://th.bing.com/th/id/R.1de9fd651c8456e9f331519c24251a96?rik=IrS1Mgz4s4uDxA&riu=http%3a%2f%2fimages.wikia.com%2flotr%2fimages%2f8%2f8d%2fGandalf-2.jpg&ehk=Nm3tJ5SK6z6MbERxfYI6yqcd3virc6P6FuI9Uv1fxxw%3d&risl=&pid=ImgRaw&r=0 "
+
+ }
 ];
 
 let personagemSecreto = {};
 let tentativas = 0;
-let dicaAtual = -1; // -1 para não ter dica, 0 para a primeira, 1 para a segunda
+let dicaAtual = -1;
+let pontuacao = 0;
+const META_PONTOS = 30;
 
 const inputPalpite = document.getElementById('adivinhaInput');
 const btnEnviar = document.getElementById('enviarPalpiteBtn');
 const mensagem = document.getElementById('mensagem');
-const btnReiniciar = document.getElementById('reiniciarBtn');
+const btnContinuar = document.getElementById('reiniciarBtn'); // Botão "Próximo Personagem"
+const btnNovoJogo = document.getElementById('novoJogoBtn'); // Botão "Reiniciar Jogo"
 const btnPedirDica = document.getElementById('pedirDicaBtn');
 const divDica = document.getElementById('dica');
+const pontuacaoTexto = document.getElementById('pontuacao');
+const metaTexto = document.getElementById('meta');
 
-// Função para iniciar ou reiniciar o jogo
 function iniciarJogo() {
     const indiceAleatorio = Math.floor(Math.random() * personagens.length);
     personagemSecreto = personagens[indiceAleatorio];
@@ -63,19 +69,44 @@ function iniciarJogo() {
     mensagem.textContent = '';
     btnEnviar.disabled = false;
     btnPedirDica.style.display = 'block';
-    btnReiniciar.style.display = 'none';
+    btnPedirDica.disabled = false;
+    btnContinuar.style.display = 'none';
+    btnNovoJogo.style.display = 'none';
     divDica.innerHTML = '';
     inputPalpite.focus();
 }
 
-// Função para mostrar a dica
+function atualizarPontuacao(pontosGanhos) {
+    pontuacao += pontosGanhos;
+    pontuacaoTexto.textContent = `Pontos: ${pontuacao}`;
+    verificarVitoria();
+}
+
+function verificarVitoria() {
+    if (pontuacao >= META_PONTOS) {
+        mensagem.textContent = `Parabéns! Você alcançou ${pontuacao} pontos e venceu o jogo!`;
+        mensagem.style.color = 'green';
+        fimDeJogoTotal();
+    } else {
+        btnContinuar.style.display = 'block';
+    }
+}
+
+function fimDeJogoTotal() {
+    btnEnviar.disabled = true;
+    btnPedirDica.disabled = true;
+    btnPedirDica.style.display = 'none';
+    btnContinuar.style.display = 'none';
+    btnNovoJogo.style.display = 'block';
+}
+
 function mostrarDica() {
     dicaAtual++;
     if (dicaAtual < personagemSecreto.dicas.length) {
         divDica.innerHTML = `<p>${personagemSecreto.dicas[dicaAtual]}</p>`;
     } else {
         divDica.innerHTML = `<img src="${personagemSecreto.imagemUrl}" alt="Imagem do Personagem">`;
-        btnPedirDica.disabled = true; // Desabilita o botão após mostrar a imagem
+        btnPedirDica.disabled = true;
         mensagem.textContent = 'Última dica, agora é sua chance!';
         mensagem.style.color = 'blue';
     }
@@ -92,25 +123,42 @@ function verificarPalpite() {
     tentativas++;
 
     if (palpite === personagemSecreto.nome.toLowerCase()) {
-        mensagem.textContent = `Parabéns! Você acertou em ${tentativas} tentativa(s)! O personagem era "${personagemSecreto.nome}"!`;
+        const pontosGanhos = calcularPontos(tentativas);
+        atualizarPontuacao(pontosGanhos);
+        mensagem.textContent = `Parabéns! Você acertou em ${tentativas} tentativa(s) e ganhou ${pontosGanhos} pontos!`;
         mensagem.style.color = 'green';
-        fimDeJogo();
+        btnEnviar.disabled = true;
+        btnPedirDica.style.display = 'none';
+        btnPedirDica.disabled = true;
+        verificarVitoria();
     } else {
         mensagem.textContent = 'Incorreto. Tente novamente!';
         mensagem.style.color = 'red';
+        if (tentativas >= 3) {
+            mensagem.textContent = `Você perdeu. O personagem era "${personagemSecreto.nome}".`;
+            mensagem.style.color = 'red';
+            fimDeJogoTotal();
+        }
     }
 }
 
-function fimDeJogo() {
-    btnEnviar.disabled = true;
-    btnPedirDica.disabled = true;
-    btnPedirDica.style.display = 'none';
-    btnReiniciar.style.display = 'block';
+function calcularPontos(tentativas) {
+    if (tentativas === 1) return 10;
+    if (tentativas === 2) return 5;
+    if (tentativas === 3) return 1;
+    return 0;
+}
+
+function reiniciarTudo() {
+    pontuacao = 0;
+    pontuacaoTexto.textContent = `Pontos: 0`;
+    iniciarJogo();
 }
 
 // Event Listeners
 btnEnviar.addEventListener('click', verificarPalpite);
-btnReiniciar.addEventListener('click', iniciarJogo);
+btnContinuar.addEventListener('click', iniciarJogo);
+btnNovoJogo.addEventListener('click', reiniciarTudo);
 btnPedirDica.addEventListener('click', mostrarDica);
 
 inputPalpite.addEventListener('keydown', (event) => {
