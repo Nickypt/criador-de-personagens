@@ -52,8 +52,7 @@ const META_PONTOS = 30;
 const inputPalpite = document.getElementById('adivinhaInput');
 const btnEnviar = document.getElementById('enviarPalpiteBtn');
 const mensagem = document.getElementById('mensagem');
-const btnContinuar = document.getElementById('reiniciarBtn'); // Botão "Próximo Personagem"
-const btnNovoJogo = document.getElementById('novoJogoBtn'); // Botão "Reiniciar Jogo"
+const btnReiniciar = document.getElementById('reiniciarBtn');
 const btnPedirDica = document.getElementById('pedirDicaBtn');
 const divDica = document.getElementById('dica');
 const pontuacaoTexto = document.getElementById('pontuacao');
@@ -70,8 +69,7 @@ function iniciarJogo() {
     btnEnviar.disabled = false;
     btnPedirDica.style.display = 'block';
     btnPedirDica.disabled = false;
-    btnContinuar.style.display = 'none';
-    btnNovoJogo.style.display = 'none';
+    btnReiniciar.style.display = 'none';
     divDica.innerHTML = '';
     inputPalpite.focus();
 }
@@ -79,37 +77,6 @@ function iniciarJogo() {
 function atualizarPontuacao(pontosGanhos) {
     pontuacao += pontosGanhos;
     pontuacaoTexto.textContent = `Pontos: ${pontuacao}`;
-    verificarVitoria();
-}
-
-function verificarVitoria() {
-    if (pontuacao >= META_PONTOS) {
-        mensagem.textContent = `Parabéns! Você alcançou ${pontuacao} pontos e venceu o jogo!`;
-        mensagem.style.color = 'green';
-        fimDeJogoTotal();
-    } else {
-        btnContinuar.style.display = 'block';
-    }
-}
-
-function fimDeJogoTotal() {
-    btnEnviar.disabled = true;
-    btnPedirDica.disabled = true;
-    btnPedirDica.style.display = 'none';
-    btnContinuar.style.display = 'none';
-    btnNovoJogo.style.display = 'block';
-}
-
-function mostrarDica() {
-    dicaAtual++;
-    if (dicaAtual < personagemSecreto.dicas.length) {
-        divDica.innerHTML = `<p>${personagemSecreto.dicas[dicaAtual]}</p>`;
-    } else {
-        divDica.innerHTML = `<img src="${personagemSecreto.imagemUrl}" alt="Imagem do Personagem">`;
-        btnPedirDica.disabled = true;
-        mensagem.textContent = 'Última dica, agora é sua chance!';
-        mensagem.style.color = 'blue';
-    }
 }
 
 function verificarPalpite() {
@@ -126,19 +93,28 @@ function verificarPalpite() {
         const pontosGanhos = calcularPontos(tentativas);
         atualizarPontuacao(pontosGanhos);
         mensagem.textContent = `Parabéns! Você acertou em ${tentativas} tentativa(s) e ganhou ${pontosGanhos} pontos!`;
-        mensagem.style.color = 'green';
-        btnEnviar.disabled = true;
-        btnPedirDica.style.display = 'none';
-        btnPedirDica.disabled = true;
-        verificarVitoria();
+        mensagem.className = 'win-message';
+        fimDeJogoDaRodada();
     } else {
         mensagem.textContent = 'Incorreto. Tente novamente!';
-        mensagem.style.color = 'red';
+        mensagem.className = 'lose-message';
         if (tentativas >= 3) {
             mensagem.textContent = `Você perdeu. O personagem era "${personagemSecreto.nome}".`;
-            mensagem.style.color = 'red';
+            mensagem.className = 'lose-message';
             fimDeJogoTotal();
         }
+    }
+}
+
+function mostrarDica() {
+    dicaAtual++;
+    if (dicaAtual < personagemSecreto.dicas.length) {
+        divDica.innerHTML = `<p>${personagemSecreto.dicas[dicaAtual]}</p>`;
+    } else {
+        divDica.innerHTML = `<img src="${personagemSecreto.imagemUrl}" alt="Imagem do Personagem">`;
+        btnPedirDica.disabled = true;
+        mensagem.textContent = 'Última dica, agora é sua chance!';
+        mensagem.className = '';
     }
 }
 
@@ -149,6 +125,22 @@ function calcularPontos(tentativas) {
     return 0;
 }
 
+function fimDeJogoDaRodada() {
+    btnEnviar.disabled = true;
+    btnPedirDica.disabled = true;
+    btnPedirDica.style.display = 'none';
+    btnReiniciar.style.display = 'block';
+    btnReiniciar.textContent = (pontuacao >= META_PONTOS) ? 'Você Venceu! Reiniciar Jogo' : 'Próximo Personagem';
+}
+
+function fimDeJogoTotal() {
+    btnEnviar.disabled = true;
+    btnPedirDica.disabled = true;
+    btnPedirDica.style.display = 'none';
+    btnReiniciar.style.display = 'block';
+    btnReiniciar.textContent = 'Reiniciar Jogo';
+}
+
 function reiniciarTudo() {
     pontuacao = 0;
     pontuacaoTexto.textContent = `Pontos: 0`;
@@ -157,9 +149,15 @@ function reiniciarTudo() {
 
 // Event Listeners
 btnEnviar.addEventListener('click', verificarPalpite);
-btnContinuar.addEventListener('click', iniciarJogo);
-btnNovoJogo.addEventListener('click', reiniciarTudo);
 btnPedirDica.addEventListener('click', mostrarDica);
+
+btnReiniciar.addEventListener('click', () => {
+    if (pontuacao >= META_PONTOS || mensagem.textContent.includes('Você perdeu')) {
+        reiniciarTudo();
+    } else {
+        iniciarJogo();
+    }
+});
 
 inputPalpite.addEventListener('keydown', (event) => {
     if (event.key === 'Enter') {

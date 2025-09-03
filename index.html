@@ -5,22 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Adivinhe o Personagem</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <h1>Adivinhe o Personagem</h1>
-    <p>Tente adivinhar o nome do personagem misterioso.</p>
+    <div class="header">
+        <h1>Adivinhe o Personagem</h1>
+        <p>Um jogo de adivinhação com dicas e pontuação.</p>
+    </div>
     
     <div class="jogo-container">
-        <p id="pontuacao">Pontos: 0</p>
-        <p id="meta">Meta de pontos para vencer: 30</p>
-
-        <div id="dica"></div>
-        <button id="pedirDicaBtn">Pedir Dica</button>
-        <input type="text" id="adivinhaInput" placeholder="Digite seu palpite">
-        <button id="enviarPalpiteBtn">Adivinhar</button>
+        <div class="score-container">
+            <p id="pontuacao">Pontos: 0</p>
+            <p id="meta">Meta: 30</p>
+        </div>
+        
+        <div id="dica-container">
+            <div id="dica"></div>
+        </div>
+        
+        <div class="controls">
+            <button id="pedirDicaBtn">Pedir Dica</button>
+            <input type="text" id="adivinhaInput" placeholder="Digite seu palpite">
+            <button id="enviarPalpiteBtn">Adivinhar</button>
+        </div>
+        
         <p id="mensagem"></p>
-        <button id="reiniciarBtn" style="display: none;">Próximo Personagem</button>
-        <button id="novoJogoBtn" style="display: none;">Reiniciar Jogo</button>
+        <button id="reiniciarBtn" class="reiniciar-btn" style="display: none;">Reiniciar Jogo</button>
     </div>
 
     <script src="script.js"></script>
