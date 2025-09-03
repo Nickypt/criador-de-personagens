@@ -6,7 +6,7 @@ const personagens = [
             "Ele é um bruxo que sobreviveu à maldição de Voldemort quando era um bebê.",
             "Ele tem uma cicatriz na testa em forma de raio."
         ],
-        imagemUrl: "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.google.com%2Fsearch%3Fq%3Dharry%2Bpotter&psig=AOvVaw0_w_X_qW_zY_b-yX_Z_B-&ust=1672531200000000&source=images&cd=vfe&ved=0CA8QjRxqFwoTCJ-l8oT-y_4CFQAAAAAdAAAAABAE"
+        imagemUrl: "https://eskipaper.com/images/harry-potter-4.jpg"
     },
     {
         nome: "Goku",
