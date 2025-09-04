@@ -1,4 +1,3 @@
-// List of characters with hints and image URLs.
 const personagens = [
     { nome: "Batman", dicas: ["Ele é um bilionário que combate o crime em Gotham City.", "Não tem superpoderes, mas usa tecnologia e gadgets avançados."], imagemUrl: "https://terraverso.com.br/wp-content/uploads/2019/10/batman.jpg" },
     { nome: "Capitão América", dicas: ["Ele é um super-soldado da Segunda Guerra Mundial, que foi congelado no tempo.", "Seu principal acessório é um escudo indestrutível feito de vibranium."], imagemUrl: "https://i.imgur.com/g0t6f1O.jpeg" },
@@ -21,7 +20,7 @@ const personagens = [
     { nome: "Optimus Prime", dicas: ["Ele é o líder dos Autobots.", "Seu corpo se transforma em um caminhão, e sua frase mais famosa é 'Autobots, roll out!'."], imagemUrl: "https://i.imgur.com/r9K8f4X.jpeg" },
     { nome: "Peter Pan", dicas: ["Ele é um menino que se recusa a crescer e mora em uma ilha mágica.", "Voa com a ajuda de pó de fada e é amigo de uma pequena fada chamada Sininho."], imagemUrl: "https://i.imgur.com/A83cQ1H.png" },
     { nome: "Sherlock Holmes", dicas: ["É um detetive particular britânico, conhecido por sua grande inteligência e observação.", "Vive na Rua Baker, 221B, em Londres, e é acompanhado por seu amigo Dr. Watson."], imagemUrl: "https://i.imgur.com/kYq3Q0L.jpeg" },
-    { nome: "Bob esponja", dicas: ["É uma criatura amarela que mora em um abacaxi, no fundo do mar.", "Seu melhor amigo é uma estrela do mar, e ele trabalha no Siri Cascudo."], imagemUrl: "https://i.imgur.com/39wF4y8.jpeg" },
+    { nome: "SpongeBob SquarePants", dicas: ["É uma criatura amarela que mora em um abacaxi, no fundo do mar.", "Seu melhor amigo é uma estrela do mar, e ele trabalha no Siri Cascudo."], imagemUrl: "https://i.imgur.com/39wF4y8.jpeg" },
     { nome: "Super-Homem", dicas: ["Ele é um alienígena do planeta Krypton, enviado à Terra ainda bebê.", "Seus poderes incluem superforça, voo e visão de raio-x."], imagemUrl: "https://i.imgur.com/fVq6X0k.jpeg" }
 ];
 
@@ -30,6 +29,11 @@ let tentativas = 0;
 let pontuacao = 0;
 let dicaAtual = -1;
 let nomeJogador = "";
+
+// Variáveis do cronômetro
+let timer;
+const TEMPO_MAXIMO = 60; // Tempo em segundos
+let tempoRestante = TEMPO_MAXIMO;
 
 // Elementos da tela de início
 const startScreen = document.getElementById('start-screen');
@@ -46,8 +50,14 @@ const btnPedirDica = document.getElementById('pedirDicaBtn');
 const divDica = document.getElementById('dica');
 const pontuacaoTexto = document.getElementById('pontuacao');
 const playerNameDisplay = document.getElementById('player-name-display');
+const timerDisplay = document.getElementById('timer-display');
 
 function iniciarJogo() {
+    // Para um novo jogo, zera a pontuação
+    if (pontuacao === 0) {
+        pontuacaoTexto.textContent = `Pontos: 0`;
+    }
+
     const indiceAleatorio = Math.floor(Math.random() * personagens.length);
     personagemSecreto = personagens[indiceAleatorio];
 
@@ -62,6 +72,9 @@ function iniciarJogo() {
     divDica.innerHTML = '<p>Toque em "Pedir Dica" para começar!</p>';
     playerNameDisplay.textContent = `${nomeJogador}'s Jogo`;
     inputPalpite.focus();
+    
+    // Inicia o cronômetro
+    resetarCronometro();
 }
 
 function atualizarPontuacao(pontosGanhos) {
@@ -116,6 +129,7 @@ function calcularPontos(tentativas) {
 }
 
 function fimDeJogoDaRodada() {
+    clearInterval(timer);
     btnEnviar.disabled = true;
     btnPedirDica.disabled = true;
     btnPedirDica.style.display = 'none';
@@ -124,6 +138,7 @@ function fimDeJogoDaRodada() {
 }
 
 function fimDeJogoTotal() {
+    clearInterval(timer);
     btnEnviar.disabled = true;
     btnPedirDica.disabled = true;
     btnPedirDica.style.display = 'none';
@@ -131,10 +146,35 @@ function fimDeJogoTotal() {
     btnReiniciar.textContent = 'Reiniciar Jogo';
 }
 
-function reiniciarTudo() {
-    pontuacao = 0;
-    pontuacaoTexto.textContent = `Pontos: 0`;
-    iniciarJogo();
+function perderPorTempo() {
+    clearInterval(timer);
+    mensagem.textContent = `Tempo esgotado, ${nomeJogador}! O personagem era "${personagemSecreto.nome}".`;
+    mensagem.className = 'lose-message';
+    fimDeJogoTotal();
+}
+
+function atualizarCronometro() {
+    tempoRestante--;
+    timerDisplay.textContent = `Tempo: ${tempoRestante}s`;
+    
+    // Altera a cor do texto quando o tempo estiver acabando
+    if (tempoRestante <= 10) {
+        timerDisplay.classList.add('danger');
+    } else {
+        timerDisplay.classList.remove('danger');
+    }
+
+    if (tempoRestante <= 0) {
+        perderPorTempo();
+    }
+}
+
+function resetarCronometro() {
+    clearInterval(timer);
+    tempoRestante = TEMPO_MAXIMO;
+    timerDisplay.textContent = `Tempo: ${tempoRestante}s`;
+    timerDisplay.classList.remove('danger');
+    timer = setInterval(atualizarCronometro, 1000);
 }
 
 // Event Listeners para a transição e a lógica do jogo
@@ -149,8 +189,9 @@ startBtn.addEventListener('click', () => {
 });
 
 btnReiniciar.addEventListener('click', () => {
-    if (pontuacao >= META_PONTOS || mensagem.textContent.includes('Você perdeu')) {
-        reiniciarTudo();
+    if (pontuacao >= META_PONTOS || mensagem.textContent.includes('Você perdeu') || mensagem.textContent.includes('Tempo esgotado')) {
+        pontuacao = 0;
+        iniciarJogo();
         gameScreen.classList.add('hidden');
         startScreen.classList.remove('hidden');
     } else {
