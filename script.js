@@ -129,7 +129,7 @@ let personagemSecreto = {};
 let tentativas = 0;
 let dicaAtual = -1;
 let pontuacao = 0;
-const META_PONTOS = 30;
+const META_PONTOS = 50;
 
 const inputPalpite = document.getElementById('adivinhaInput');
 const btnEnviar = document.getElementById('enviarPalpiteBtn');
