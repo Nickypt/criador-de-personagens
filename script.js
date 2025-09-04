@@ -104,14 +104,7 @@ const personagens = [
         ],
         imagemUrl: "https://i.imgur.com/A83cQ1H.png"
     },
-    {
-        nome: "Frodo Bolseiro",
-        dicas: [
-            "Ele é um hobbit, uma criatura pequena que vive em um lugar chamado o Condado.",
-            "Sua missão é destruir um anel mágico e poderoso em uma montanha de fogo."
-        ],
-        imagemUrl: "https://i.imgur.com/uGzC1Nn.png"
-    },
+    
     {
         nome: "Homem-Aranha",
         dicas: [
@@ -128,7 +121,8 @@ let dicaAtual = -1;
 let pontuacao = 0;
 const META_PONTOS = 30;
 
-// Game Screen Elements
+const startScreen = document.getElementById('start-screen');
+const startBtn = document.getElementById('start-btn');
 const gameScreen = document.getElementById('game-screen');
 const inputPalpite = document.getElementById('adivinhaInput');
 const btnEnviar = document.getElementById('enviarPalpiteBtn');
@@ -137,10 +131,7 @@ const btnReiniciar = document.getElementById('reiniciarBtn');
 const btnPedirDica = document.getElementById('pedirDicaBtn');
 const divDica = document.getElementById('dica');
 const pontuacaoTexto = document.getElementById('pontuacao');
-
-// Start Screen Elements
-const startScreen = document.getElementById('start-screen');
-const startBtn = document.getElementById('start-btn');
+const metaTexto = document.getElementById('meta');
 
 function iniciarJogo() {
     const indiceAleatorio = Math.floor(Math.random() * personagens.length);
@@ -154,7 +145,7 @@ function iniciarJogo() {
     btnPedirDica.style.display = 'inline-block';
     btnPedirDica.disabled = false;
     btnReiniciar.style.display = 'none';
-    divDica.innerHTML = '<p>Toque em "Pedir Dica" para começar a jogar!</p>';
+    divDica.innerHTML = '<p>Toque em "Pedir Dica" para começar!</p>';
     inputPalpite.focus();
 }
 
@@ -231,39 +222,29 @@ function reiniciarTudo() {
     iniciarJogo();
 }
 
-// Event Listeners
+// Event Listeners para a transição e a lógica do jogo
 startBtn.addEventListener('click', () => {
-    startScreen.classList.remove('active');
     startScreen.classList.add('hidden');
     gameScreen.classList.remove('hidden');
-    gameScreen.classList.add('active');
     iniciarJogo();
 });
 
-btnEnviar.addEventListener('click', verificarPalpite);
-btnPedirDica.addEventListener('click', mostrarDica);
-
 btnReiniciar.addEventListener('click', () => {
     if (pontuacao >= META_PONTOS || mensagem.textContent.includes('Você perdeu')) {
+        // Se venceu ou perdeu, volta para a tela inicial
         reiniciarTudo();
-        startScreen.classList.remove('hidden');
-        startScreen.classList.add('active');
-        gameScreen.classList.remove('active');
         gameScreen.classList.add('hidden');
+        startScreen.classList.remove('hidden');
     } else {
+        // Se não, vai para o próximo personagem
         iniciarJogo();
     }
 });
 
+btnEnviar.addEventListener('click', verificarPalpite);
+btnPedirDica.addEventListener('click', mostrarDica);
 inputPalpite.addEventListener('keydown', (event) => {
     if (event.key === 'Enter') {
         verificarPalpite();
     }
 });
-
-// Initial state
-window.onload = () => {
-    startScreen.classList.remove('hidden');
-    startScreen.classList.add('active');
-    gameScreen.classList.add('hidden');
-};
