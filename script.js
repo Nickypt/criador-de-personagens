@@ -119,7 +119,7 @@ let personagemSecreto = {};
 let tentativas = 0;
 let dicaAtual = -1;
 let pontuacao = 0;
-const META_PONTOS = 30;
+const META_PONTOS = 100;
 
 const startScreen = document.getElementById('start-screen');
 const startBtn = document.getElementById('start-btn');
