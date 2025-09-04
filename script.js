@@ -31,8 +31,6 @@ let pontuacao = 0;
 let dicaAtual = -1;
 let nomeJogador = "";
 
-const META_PONTOS = 30;
-
 // Elementos da tela de início
 const startScreen = document.getElementById('start-screen');
 const startBtn = document.getElementById('start-btn');
