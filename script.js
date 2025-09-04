@@ -1,4 +1,4 @@
-// Lista de personagens com dicas e URLs de imagem.
+// List of characters with hints and image URLs.
 const personagens = [
     {
         nome: "Harry Potter",
@@ -30,7 +30,7 @@ const personagens = [
             "É um detetive particular britânico, conhecido por sua grande inteligência e observação.",
             "Vive na Rua Baker, 221B, em Londres, e é acompanhado por seu amigo Dr. Watson."
         ],
-        imagemUrl: " "
+        imagemUrl: "https://i.imgur.com/kYq3Q0L.jpeg"
     },
     {
         nome: "Gandalf",
@@ -38,7 +38,7 @@ const personagens = [
             "Ele é um mago poderoso, membro da Ordem de Istari.",
             "Guia os hobbits, anões e humanos em uma missão para derrotar um grande mal."
         ],
-        imagemUrl: " "
+        imagemUrl: "https://i.imgur.com/N8d3m6j.png"
     },
     {
         nome: "Mulher Maravilha",
@@ -46,7 +46,7 @@ const personagens = [
             "Ela é uma princesa guerreira de Themyscira, uma ilha oculta.",
             "Seu principal acessório é o Laço da Verdade, que força as pessoas a dizerem a verdade."
         ],
-        imagemUrl: " "
+        imagemUrl: "https://i.imgur.com/Kx3u45L.jpeg"
     },
     {
         nome: "Homem de Ferro",
@@ -54,7 +54,7 @@ const personagens = [
             "Ele é um inventor e bilionário excêntrico.",
             "Usa uma armadura de alta tecnologia para combater o crime e salvar o mundo."
         ],
-        imagemUrl: " "
+        imagemUrl: "https://i.imgur.com/pB33gC7.png"
     },
     {
         nome: "Darth Vader",
@@ -62,7 +62,7 @@ const personagens = [
             "É um dos vilões mais icônicos do cinema, com uma respiração pesada e robótica.",
             "Ele é um Lorde Sith, conhecido por ser o principal executor do Império Galáctico."
         ],
-        imagemUrl: " "
+        imagemUrl: "https://i.imgur.com/L4R5G4c.jpeg"
     },
     {
         nome: "Super-Homem",
@@ -70,7 +70,7 @@ const personagens = [
             "Ele é um alienígena do planeta Krypton, enviado à Terra ainda bebê.",
             "Seus poderes incluem superforça, voo e visão de raio-x."
         ],
-        imagemUrl: " "
+        imagemUrl: "https://i.imgur.com/fVq6X0k.jpeg"
     },
     {
         nome: "Capitão América",
@@ -78,7 +78,7 @@ const personagens = [
             "Ele é um super-soldado da Segunda Guerra Mundial, que foi congelado no tempo.",
             "Seu principal acessório é um escudo indestrutível feito de vibranium."
         ],
-        imagemUrl: " "
+        imagemUrl: "https://i.imgur.com/g0t6f1O.jpeg"
     },
     {
         nome: "Hulk",
@@ -122,15 +122,14 @@ const personagens = [
     }
 ];
 
-// O restante do seu código JavaScript continua o mesmo, sem alterações.
-// ... (código JavaScript da versão anterior)
-
 let personagemSecreto = {};
 let tentativas = 0;
 let dicaAtual = -1;
 let pontuacao = 0;
-const META_PONTOS = 50;
+const META_PONTOS = 30;
 
+// Game Screen Elements
+const gameScreen = document.getElementById('game-screen');
 const inputPalpite = document.getElementById('adivinhaInput');
 const btnEnviar = document.getElementById('enviarPalpiteBtn');
 const mensagem = document.getElementById('mensagem');
@@ -138,7 +137,10 @@ const btnReiniciar = document.getElementById('reiniciarBtn');
 const btnPedirDica = document.getElementById('pedirDicaBtn');
 const divDica = document.getElementById('dica');
 const pontuacaoTexto = document.getElementById('pontuacao');
-const metaTexto = document.getElementById('meta');
+
+// Start Screen Elements
+const startScreen = document.getElementById('start-screen');
+const startBtn = document.getElementById('start-btn');
 
 function iniciarJogo() {
     const indiceAleatorio = Math.floor(Math.random() * personagens.length);
@@ -149,10 +151,10 @@ function iniciarJogo() {
     inputPalpite.value = '';
     mensagem.textContent = '';
     btnEnviar.disabled = false;
-    btnPedirDica.style.display = 'block';
+    btnPedirDica.style.display = 'inline-block';
     btnPedirDica.disabled = false;
     btnReiniciar.style.display = 'none';
-    divDica.innerHTML = '';
+    divDica.innerHTML = '<p>Toque em "Pedir Dica" para começar a jogar!</p>';
     inputPalpite.focus();
 }
 
@@ -230,12 +232,24 @@ function reiniciarTudo() {
 }
 
 // Event Listeners
+startBtn.addEventListener('click', () => {
+    startScreen.classList.remove('active');
+    startScreen.classList.add('hidden');
+    gameScreen.classList.remove('hidden');
+    gameScreen.classList.add('active');
+    iniciarJogo();
+});
+
 btnEnviar.addEventListener('click', verificarPalpite);
 btnPedirDica.addEventListener('click', mostrarDica);
 
 btnReiniciar.addEventListener('click', () => {
     if (pontuacao >= META_PONTOS || mensagem.textContent.includes('Você perdeu')) {
         reiniciarTudo();
+        startScreen.classList.remove('hidden');
+        startScreen.classList.add('active');
+        gameScreen.classList.remove('active');
+        gameScreen.classList.add('hidden');
     } else {
         iniciarJogo();
     }
@@ -247,5 +261,9 @@ inputPalpite.addEventListener('keydown', (event) => {
     }
 });
 
-// Inicia o jogo quando a página carrega
-iniciarJogo();
+// Initial state
+window.onload = () => {
+    startScreen.classList.remove('hidden');
+    startScreen.classList.add('active');
+    gameScreen.classList.add('hidden');
+};
